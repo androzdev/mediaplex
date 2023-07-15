@@ -14,7 +14,7 @@ export interface ProbeResult {
   codec: JsCodecType
   /** The number of frames */
   nFrames: number
-  /** The duration of this media in seconds */
+  /** The approximate duration of this media in seconds */
   duration: number
 }
 export const enum CodecType {

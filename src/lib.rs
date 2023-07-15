@@ -24,7 +24,7 @@ pub struct JsProbeResult {
   pub codec: JsCodecType,
   /// The number of frames
   pub n_frames: u32,
-  /// The duration of this media in seconds
+  /// The approximate duration of this media in seconds
   pub duration: u32,
 }
 
