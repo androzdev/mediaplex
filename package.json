@@ -34,8 +34,8 @@
   },
   "scripts": {
     "artifacts": "napi artifacts",
-    "build": "napi build --platform --release --dts binding.d.ts --js binding.js ./lib",
-    "build:debug": "napi build --platform --dts binding.d.ts --js binding.js ./lib",
+    "build": "napi build --platform --release --dts js-binding.d.ts --js js-binding.js ./",
+    "build:debug": "napi build --platform --dts js-binding.d.ts --js js-binding.js ./",
     "prepublishOnly": "napi prepublish -t npm",
     "test": "ava",
     "universal": "napi universal",

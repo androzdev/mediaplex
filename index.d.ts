@@ -1,4 +1,4 @@
-import type { ProbeResult } from './lib/binding'
+import type { ProbeResult } from './js-binding'
 import type { Readable } from 'stream'
 
 export type StreamProbeResult = {
