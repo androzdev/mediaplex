@@ -1,7 +1,16 @@
 import test from 'ava'
+import { probe } from '../index.js'
+import { readFile } from 'fs/promises';
 
-import { sum } from '../index.js'
+test('should probe mp3 buffer', async (t) => {
+  const chunk = await readFile('./__test__/data/head.mp3');
 
-test('sum from native', (t) => {
-  t.is(sum(1, 2), 3)
+  t.deepEqual(probe(chunk), {
+    channels: 2,
+    sampleRate: 44100,
+    framesPerBlock: 0,
+    codec: 4099,
+    nFrames: 796032,
+    duration: 18
+  });
 })
