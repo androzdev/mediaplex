@@ -89,10 +89,39 @@ async function probeStream(
     });
 }
 
+/**
+ * Reads metadata tags
+ * @param {import('./js-binding').ProbeResult} result The probe result to read metadata from
+ */
+function readMetadata(result) {
+    const res = {
+        title: null,
+        author: null,
+        genre: null
+    };
+
+    if (!result.metadata?.length) return res;
+
+    result.metadata.forEach(m => {
+        if (!m.value) return;
+
+        if ((m.name === 'TPE1' || m.name === 'TPUB') && !res['author']) {
+            res['author'] = m.value;
+        } else if (m.name === 'TIT2') {
+            res['title'] = m.value;
+        } else if ((m.name === 'TALB' || m.name === 'TCON') && !res['genre']) {
+            res['genre'] = m.value;
+        }
+    });
+
+    return res;
+}
+
 const { CodecType, probe } = binding;
 
 module.exports = {
     CodecType,
     probe,
     probeStream,
+    readMetadata
 };

@@ -16,6 +16,8 @@ export interface ProbeResult {
   nFrames: number
   /** The approximate duration of this media in seconds */
   duration: number
+  /** The metadata object */
+  metadata: Array<MetadataField>
 }
 export const enum CodecType {
   UNKNOWN = 0,
@@ -84,5 +86,9 @@ export const enum CodecType {
   MONKEYS_AUDIO = 8194,
   ALAC = 8195,
   TTA = 8196
+}
+export interface MetadataField {
+  name: string
+  value: string
 }
 export function probe(data: Buffer): ProbeResult

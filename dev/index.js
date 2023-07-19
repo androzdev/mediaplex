@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { probeStream } = require('../lib/index.js');
+const { probeStream, readMetadata } = require('../index.js');
 
 const stream = fs.createReadStream(`${__dirname}/test.mp3`);
 
@@ -8,7 +8,7 @@ const stream = fs.createReadStream(`${__dirname}/test.mp3`);
  */
 async function main() {
     const probeResult = await probeStream(stream);
-    console.log(probeResult.result);
+    console.log(readMetadata(probeResult.result));
     /*
     {
         channels: 2,
