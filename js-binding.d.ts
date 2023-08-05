@@ -92,3 +92,13 @@ export interface MetadataField {
   value: string
 }
 export function probe(data: Buffer): ProbeResult
+export class OpusEncoder {
+  constructor(sampleRate: number, channels: number)
+  encode(data: Buffer): Buffer
+  decode(data: Buffer): Buffer
+  setBitrate(bitrate: number): void
+  getBitrate(): number
+  applyEncoderCtl(request: number, value: number): void
+  applyDecoderCtl(request: number, value: number): void
+  destroy(): void
+}

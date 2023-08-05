@@ -10,7 +10,16 @@ Tiny media transcoding utility for node.
 $ npm install --save mediaplex
 ```
 
-# Example
+# Current Features
+
+- probe media files for metadata
+- Opus encoder/decoder
+
+More features coming soon.
+
+# Examples
+
+## Probe metadata
 
 ```js
 const mediaplex = require('mediaplex');
@@ -27,7 +36,29 @@ console.log(result);
     framesPerBlock: 0,
     codec: 4099, // use `CodecType` enum to validate this
     nFrames: 796032,
-    duration: 18 // seconds
+    duration: 18, // seconds
+    metadata: [
+        { name: 'TXXX:major_brand', value: 'mp42' },
+        { name: 'TXXX:minor_version', value: '0' },
+        { name: 'TXXX:compatible_brands', value: 'isommp42' },
+        { name: 'TSSE', value: 'Lavf59.6.100' },
+        { name: 'TIT2', value: "..." },
+        { name: 'TPE1', value: '...' },
+        { name: 'TALB', value: '...' },
+        { name: 'TCON', value: '...' },
+        { name: 'TPUB', value: '...' }
+    ]
 }
 */
+```
+
+## Opus Encoder
+
+```js
+const { OpusEncoder } = require('mediaplex');
+
+const encoder = new OpusEncoder(48000, 2);
+
+const encoded = encoder.encode(buffer);
+const decoded = encoder.decode(encoded);
 ```

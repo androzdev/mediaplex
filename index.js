@@ -97,7 +97,12 @@ function readMetadata(result) {
     const res = {
         title: null,
         author: null,
-        genre: null
+        album: null,
+        genre: null,
+        year: null,
+        duration: null,
+        composer: null,
+        bpm: null
     };
 
     if (!result.metadata?.length) return res;
@@ -105,23 +110,34 @@ function readMetadata(result) {
     result.metadata.forEach(m => {
         if (!m.value) return;
 
-        if ((m.name === 'TPE1' || m.name === 'TPUB') && !res['author']) {
-            res['author'] = m.value;
-        } else if (m.name === 'TIT2') {
-            res['title'] = m.value;
-        } else if ((m.name === 'TALB' || m.name === 'TCON') && !res['genre']) {
-            res['genre'] = m.value;
+        if (m.name === 'TIT2') {
+            res.title = m.value;
+        } else if (m.name === 'TPE1' || m.name === 'TPUB') {
+            res.author = m.value;
+        } else if (m.name === 'TALB') {
+            res.album = m.value;
+        } else if (m.name === 'TCON') {
+            res.genre = m.value;
+        } else if (m.name === 'TYER') {
+            res.year = m.value;
+        } else if (m.name === 'TLEN') {
+            res.duration = parseInt(m.value);
+        } else if (m.name === 'TCOM') {
+            res.composer = m.value;
+        } else if (m.name === 'TBPM') {
+            res.bpm = parseInt(m.value);
         }
     });
 
     return res;
 }
 
-const { CodecType, probe } = binding;
+const { CodecType, probe, OpusEncoder } = binding;
 
 module.exports = {
     CodecType,
     probe,
     probeStream,
-    readMetadata
+    readMetadata,
+    OpusEncoder,
 };

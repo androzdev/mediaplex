@@ -139,12 +139,17 @@ pub fn probe(data: Buffer) -> Result<JsProbeResult> {
 
   let mut probed = symphonia::default::get_probe()
     .format(&hint, mss, &fmt_opts, &meta_opts)
-    .expect("unsupported format");
+    .map_err(|e| {
+      Error::new(
+        Status::GenericFailure,
+        format!("failed to probe media: {}", e),
+      )
+    })?;
 
   let mut format = probed.format;
-  
+
   let metadata: Vec<MetadataField>;
-  
+
   if let Some(metadata_rev) = format.metadata().current() {
     metadata = parse_metadata(&metadata_rev);
   } else if let Some(metadata_rev) = probed.metadata.get().as_ref().and_then(|m| m.current()) {
@@ -157,7 +162,7 @@ pub fn probe(data: Buffer) -> Result<JsProbeResult> {
     .tracks()
     .iter()
     .find(|t| t.codec_params.codec != CODEC_TYPE_NULL)
-    .expect("no supported audio tracks");
+    .ok_or(Error::new(Status::GenericFailure, "no audio tracks found"))?;
 
   let codec_params = &track.codec_params;
 
@@ -249,9 +254,12 @@ pub fn probe(data: Buffer) -> Result<JsProbeResult> {
 }
 
 fn parse_metadata(rev: &MetadataRevision) -> Vec<MetadataField> {
-    let tags = rev.tags();
-    tags.iter().map(|tag| MetadataField {
-        name: tag.key.to_string(),
-        value: tag.value.to_string(),
-    }).collect()
+  let tags = rev.tags();
+  tags
+    .iter()
+    .map(|tag| MetadataField {
+      name: tag.key.to_string(),
+      value: tag.value.to_string(),
+    })
+    .collect()
 }

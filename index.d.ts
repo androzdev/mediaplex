@@ -1,5 +1,5 @@
-import type { ProbeResult } from './js-binding'
-import type { Readable } from 'stream'
+import type { ProbeResult } from './js-binding';
+import type { Readable } from 'stream';
 
 export type StreamProbeResult = {
   stream: Readable;
@@ -10,6 +10,11 @@ export interface Metadata {
   title: string | null;
   author: string | null;
   genre: string | null;
+  album: string | null;
+  year: string | null;
+  duration: number | null;
+  composer: string | null;
+  bpm: number | null;
 }
 
 export * from './js-binding';
