@@ -28,7 +28,7 @@
   </head>
   <body>
     <div class="container">
-      <canvas id="chart1691322027037" width="16" height="9"></canvas>
+      <canvas id="chart1691334217982" width="16" height="9"></canvas>
     </div>
     <script>
       const format = (num) => {
@@ -51,18 +51,18 @@
           chunked.map((chunk) => chunk.join('')).join(' ') + fractionStr
         )
       }
-      const ctx1691322027037 = document
-        .getElementById('chart1691322027037')
+      const ctx1691334217982 = document
+        .getElementById('chart1691334217982')
         .getContext('2d')
-      const chart1691322027037 = new Chart(ctx1691322027037, {
+      const chart1691334217982 = new Chart(ctx1691334217982, {
         type: 'bar',
         data: {
           labels: ["mediaplex","@discordjs/opus","opusscript","opusscript (no wasm)"],
           datasets: [
             {
-              data: [3112,3119,4111,261],
-              backgroundColor: ["hsl(90.84, 85%, 55%)","hsl(91.04400000000001, 85%, 55%)","hsl(120, 85%, 55%)","hsl(7.619999999999994, 85%, 55%)"],
-              borderColor: ["hsl(90.84, 85%, 55%)","hsl(91.04400000000001, 85%, 55%)","hsl(120, 85%, 55%)","hsl(7.619999999999994, 85%, 55%)"],
+              data: [3589,3203,4190,259],
+              backgroundColor: ["hsl(102.79199999999999, 85%, 55%)","hsl(91.728, 85%, 55%)","hsl(120, 85%, 55%)","hsl(7.416000000000008, 85%, 55%)"],
+              borderColor: ["hsl(102.79199999999999, 85%, 55%)","hsl(91.728, 85%, 55%)","hsl(120, 85%, 55%)","hsl(7.416000000000008, 85%, 55%)"],
               borderWidth: 2,
             },
           ],

@@ -151,6 +151,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^20.4.8":
+  version: 20.4.8
+  resolution: "@types/node@npm:20.4.8"
+  checksum: 86a3963c0c7af3410553d1dfa4b018a20b3cb3ab4d8e8ffe27408b6338c5de0374b0bf379bc705da2205b466daa751ccfe062f453ba9bde34fdb0e5163ca6a68
+  languageName: node
+  linkType: hard
+
 "abbrev@npm:1, abbrev@npm:^1.0.0":
   version: 1.1.1
   resolution: "abbrev@npm:1.1.1"
@@ -1500,6 +1507,7 @@ __metadata:
   dependencies:
     "@discordjs/opus": ^0.9.0
     "@napi-rs/cli": ^2.16.1
+    "@types/node": ^20.4.8
     ava: ^5.1.1
     benny: ^3.7.1
     opusscript: ^0.1.0
