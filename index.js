@@ -132,7 +132,7 @@ function readMetadata(result) {
     return res;
 }
 
-const { CodecType, probe, OpusEncoder } = binding;
+const { CodecType, probe, OpusEncoder, getOpusVersion } = binding;
 
 module.exports = {
     CodecType,
@@ -140,4 +140,5 @@ module.exports = {
     probeStream,
     readMetadata,
     OpusEncoder,
+    getOpusVersion,
 };
