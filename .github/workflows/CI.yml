@@ -52,11 +52,6 @@ jobs:
           - host: macos-latest
             target: aarch64-apple-darwin
             build: |
-              sudo rm -Rf /Library/Developer/CommandLineTools/SDKs/*;
-              export CC=$(xcrun -f clang);
-              export CXX=$(xcrun -f clang++);
-              SYSROOT=$(xcrun --sdk macosx --show-sdk-path);
-              export CFLAGS="-isysroot $SYSROOT -isystem $SYSROOT";
               yarn build --target aarch64-apple-darwin
               strip -x *.node
           - host: ubuntu-latest
@@ -169,7 +164,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-            submodules: true
+          submodules: true
       - name: Build
         id: build
         uses: vmactions/freebsd-vm@v0
@@ -183,7 +178,9 @@ jobs:
           usesh: true
           mem: 3000
           prepare: |
-            pkg install -y -f curl node libnghttp2 npm yarn
+            pkg install -y -f curl node libnghttp2
+            curl -qL https://www.npmjs.com/install.sh | sh
+            npm install --location=global --ignore-scripts yarn
             curl https://sh.rustup.rs -sSf --output rustup.sh
             sh rustup.sh -y --profile minimal --default-toolchain beta
             export PATH="/usr/local/cargo/bin:$PATH"
@@ -223,8 +220,6 @@ jobs:
         settings:
           - host: windows-latest
             target: x86_64-pc-windows-msvc
-          - host: macos-latest
-            target: x86_64-apple-darwin
         node:
           - '14'
           - '16'
@@ -232,6 +227,8 @@ jobs:
     runs-on: ${{ matrix.settings.host }}
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: true
       - name: Setup node
         uses: actions/setup-node@v3
         with:
@@ -430,6 +427,39 @@ jobs:
             set -e
             yarn test
             ls -la
+  universal-macOS:
+    name: Build universal macOS binary
+    needs:
+      - build
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          check-latest: true
+          cache: yarn
+      - name: Install dependencies
+        run: yarn install
+      - name: Download macOS x64 artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: bindings-x86_64-apple-darwin
+          path: artifacts
+      - name: Download macOS arm64 artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: bindings-aarch64-apple-darwin
+          path: artifacts
+      - name: Combine binaries
+        run: yarn universal
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: bindings-universal-apple-darwin
+          path: ${{ env.APP_NAME }}.*.node
+          if-no-files-found: error
   publish:
     name: Publish
     runs-on: ubuntu-latest
@@ -441,6 +471,7 @@ jobs:
       - test-linux-aarch64-gnu-binding
       - test-linux-aarch64-musl-binding
       - test-linux-arm-gnueabihf-binding
+      - universal-macOS
     steps:
       - uses: actions/checkout@v3
       - name: Setup node
