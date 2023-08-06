@@ -55,7 +55,9 @@ console.log(result);
 ## Opus Encoder
 
 ```js
-const { OpusEncoder } = require('mediaplex');
+const { OpusEncoder, getOpusVersion } = require('mediaplex');
+
+console.log(getOpusVersion()); // libopus 1.4-6-g9fc8fc4c
 
 const encoder = new OpusEncoder(48000, 2);
 
