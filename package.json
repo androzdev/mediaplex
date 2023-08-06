@@ -43,7 +43,7 @@
     "test": "ava",
     "universal": "napi universal",
     "version": "napi version",
-    "benchmark": "node ./benchmark/bench.js"
+    "benchmark": "node ./benchmark/encoder.mjs && node ./benchmark/decoder.mjs"
   },
   "packageManager": "yarn@3.6.1",
   "description": "Tiny media transcoding utility for node",

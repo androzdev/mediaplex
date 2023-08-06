@@ -13,7 +13,6 @@ pub struct OpusEncoder {
   decoder: Option<Decoder>,
   sample_rate: i32,
   channels: i32,
-  out_buffer: Vec<u8>,
 }
 
 #[napi]
@@ -29,7 +28,6 @@ impl OpusEncoder {
       decoder: None,
       sample_rate,
       channels,
-      out_buffer: vec![0u8; MAX_FRAME_SIZE],
     })
   }
 
@@ -74,6 +72,7 @@ impl OpusEncoder {
 
     let encoder = self.encoder.as_mut().unwrap();
     let data_ref: &[u8] = &data;
+    let mut out_buffer = vec![0u8; MAX_FRAME_SIZE];
 
     let data_i16 = unsafe {
       let ptr = data_ref.as_ptr() as *const i16;
@@ -82,10 +81,10 @@ impl OpusEncoder {
     };
 
     let len = encoder
-      .encode(data_i16, &mut self.out_buffer)
+      .encode(data_i16, &mut out_buffer)
       .map_err(|e| Error::new(Status::GenericFailure, format!("Failed to encode: {}", e)))?;
 
-    Ok(self.out_buffer[..len].to_vec().into())
+    Ok(out_buffer[..len].to_vec().into())
   }
 
   #[napi(catch_unwind)]
