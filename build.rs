@@ -62,6 +62,7 @@ fn link_opus(is_static: bool, opus_build_dir: impl Display) {
 
 #[cfg(any(unix, target_env = "gnu"))]
 fn find_via_pkg_config(is_static: bool) -> bool {
+  use pkg_config;
   pkg_config::Config::new()
     .statik(is_static)
     .probe("opus")

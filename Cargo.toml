@@ -17,6 +17,7 @@ symphonia = { version = "0.5.3", features = ["all"] }
 napi-build = "2.0.1"
 cmake = "0.1"
 bindgen = "0.59.1"
+pkg-config = "0.3.17"
 
 [profile.release]
 lto = true
