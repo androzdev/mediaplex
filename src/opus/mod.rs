@@ -25,11 +25,13 @@ fn get_decode_error(decoded_samples: i32) -> &'static str {
 
 #[napi]
 pub fn get_opus_version() -> String {
-  let ver = unsafe { opus_get_version_string() };
+  let version_string = unsafe { opus_get_version_string() };
+  let version_cstr = unsafe { core::ffi::CStr::from_ptr(version_string) };
 
-  let c_str = unsafe { std::ffi::CStr::from_ptr(ver).to_str() };
+  // fallback to libopus v1.3.1 (cloned), it was cloned from 1.3.1 branch
+  let version_string = version_cstr.to_str().unwrap_or("libopus v1.3.1 (cloned)").to_owned();
 
-  return c_str.unwrap_or("unknown").to_string();
+  return version_string;
 }
 
 #[napi(js_name = "OpusEncoder")]

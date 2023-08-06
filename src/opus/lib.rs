@@ -135,7 +135,7 @@ extern "C" {
   #[doc = "                                     This must be one of 8000, 12000, 16000,"]
   #[doc = "                                     24000, or 48000."]
   #[doc = " @param [in] channels <tt>int</tt>: Number of channels (1 or 2) in input signal"]
-  #[doc = " @param [in] application <tt>int</tt>: Coding mode (one of @ref OPUS_APPLICATION_VOIP, @ref OPUS_APPLICATION_AUDIO, or @ref OPUS_APPLICATION_RESTRICTED_LOWDELAY)"]
+  #[doc = " @param [in] application <tt>int</tt>: Coding mode (@ref OPUS_APPLICATION_VOIP/@ref OPUS_APPLICATION_AUDIO/@ref OPUS_APPLICATION_RESTRICTED_LOWDELAY)"]
   #[doc = " @param [out] error <tt>int*</tt>: @ref opus_errorcodes"]
   #[doc = " @note Regardless of the sampling rate and number channels selected, the Opus encoder"]
   #[doc = " can switch to a lower audio bandwidth or number of channels if the bitrate"]
@@ -159,7 +159,7 @@ extern "C" {
   #[doc = "                                      This must be one of 8000, 12000, 16000,"]
   #[doc = "                                      24000, or 48000."]
   #[doc = " @param [in] channels <tt>int</tt>: Number of channels (1 or 2) in input signal"]
-  #[doc = " @param [in] application <tt>int</tt>: Coding mode (one of OPUS_APPLICATION_VOIP, OPUS_APPLICATION_AUDIO, or OPUS_APPLICATION_RESTRICTED_LOWDELAY)"]
+  #[doc = " @param [in] application <tt>int</tt>: Coding mode (OPUS_APPLICATION_VOIP/OPUS_APPLICATION_AUDIO/OPUS_APPLICATION_RESTRICTED_LOWDELAY)"]
   #[doc = " @retval #OPUS_OK Success or @ref opus_errorcodes"]
   pub fn opus_encoder_init(
     st: *mut OpusEncoder,
