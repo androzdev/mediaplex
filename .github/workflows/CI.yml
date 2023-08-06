@@ -91,6 +91,8 @@ jobs:
     runs-on: ${{ matrix.settings.host }}
     steps:
       - uses: actions/checkout@v3
+        with:
+            submodules: true
       - name: Setup node
         uses: actions/setup-node@v3
         if: ${{ !matrix.settings.docker }}
@@ -158,6 +160,8 @@ jobs:
     name: Build FreeBSD
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: true
       - name: Build
         id: build
         uses: vmactions/freebsd-vm@v0
@@ -220,6 +224,8 @@ jobs:
     runs-on: ${{ matrix.settings.host }}
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: true
       - name: Setup node
         uses: actions/setup-node@v3
         with:
