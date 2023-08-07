@@ -67,6 +67,8 @@ const decoded = encoder.decode(encoded);
 
 #### Opus Benchmarks
 
+Tested on windows 11 i7-8700 3.2GHz
+
 ```js
 $ yarn benchmark
 

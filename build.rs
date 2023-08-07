@@ -35,7 +35,7 @@ fn generate_binding() {
 }
 
 fn build_opus(is_static: bool) {
-  let opus_path = Path::new("libopus");
+  let opus_path = Path::new("deps/libopus");
 
   println!(
     "cargo:info=Opus source path used: {:?}.",
