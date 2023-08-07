@@ -30,10 +30,4 @@ b.suite(
     }),
     b.cycle(),
     b.complete(),
-    b.save({
-        format: "chart.html",
-        details: true,
-        file: "opus-decoder-benchmark",
-        folder: "./benchmark/results"
-    }),
 );
