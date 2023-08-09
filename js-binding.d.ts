@@ -103,5 +103,4 @@ export class OpusEncoder {
   applyEncoderCtl(request: number, value: number): void
   applyDecoderCtl(request: number, value: number): void
   get version(): string
-  destroy(): void
 }

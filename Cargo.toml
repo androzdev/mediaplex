@@ -8,13 +8,14 @@ crate-type = ["cdylib"]
 
 [dependencies]
 dasp = { version = "0.11.0" }
-# Default enable napi4 feature, see https://nodejs.org/api/n-api.html#node-api-version-matrix
-napi = { version = "2.12.2", default-features = false, features = ["napi4"] }
-napi-derive = "2.12.2"
+napi = { git = "https://github.com/napi-rs/napi-rs", default-features = false, features = [
+    "napi4",
+] }
+napi-derive = { git = "https://github.com/napi-rs/napi-rs" }
 symphonia = { version = "0.5.3", features = ["all"] }
 
 [build-dependencies]
-napi-build = "2.0.1"
+napi-build = { git = "https://github.com/napi-rs/napi-rs" }
 cmake = "0.1"
 bindgen = "0.59.1"
 pkg-config = "0.3.17"

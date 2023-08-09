@@ -28,10 +28,13 @@ pub fn get_opus_version() -> String {
   let version_string = unsafe { opus_get_version_string() };
   let version_cstr = unsafe { core::ffi::CStr::from_ptr(version_string) };
 
-  // fallback to libopus v1.3.1 (cloned), it was cloned from 1.3.1 branch
-  let version_string = version_cstr.to_str().unwrap_or("libopus v1.3.1 (cloned)").to_owned();
+  // fallback to libopus v1.4 (master), it was cloned from master branch
+  let version_string = version_cstr
+    .to_str()
+    .unwrap_or("libopus v1.4 (master)")
+    .to_owned();
 
-  return version_string;
+  version_string
 }
 
 #[napi(js_name = "OpusEncoder")]
@@ -112,13 +115,13 @@ impl JsOpusEncoder {
       std::slice::from_raw_parts(ptr, len)
     };
 
-    let frame_size = data.len() as i32 / 2 / self.channels as i32;
+    let frame_size = data.len() / 2 / (self.channels as usize);
 
     let compressed_len = unsafe {
       opus_encode(
         self.encoder,
         pcm.as_ptr(),
-        frame_size,
+        frame_size as i32,
         out_buffer.as_mut_ptr(),
         MAX_PACKET_SIZE as i32,
       )
@@ -159,11 +162,11 @@ impl JsOpusEncoder {
       ));
     }
 
-    let decoded_length = decoded_samples * 2 * self.channels;
+    let decoded_length = decoded_samples * self.channels;
 
     let out = unsafe {
       let ptr = out.as_ptr() as *const u8;
-      std::slice::from_raw_parts(ptr, decoded_length as usize)
+      std::slice::from_raw_parts(ptr, decoded_length as usize * 4)
     };
 
     Ok(out.to_vec().into())
@@ -266,25 +269,8 @@ impl JsOpusEncoder {
   }
 
   #[napi(getter)]
-  pub fn get_version() -> String {
+  pub fn get_version(&self) -> String {
     get_opus_version()
-  }
-
-  #[napi]
-  pub fn destroy(&mut self) -> Result<()> {
-    if !self.encoder.is_null() {
-      unsafe {
-        opus_encoder_destroy(self.encoder);
-      }
-    }
-
-    if !self.decoder.is_null() {
-      unsafe {
-        opus_decoder_destroy(self.decoder);
-      }
-    }
-
-    Ok(())
   }
 }
 
