@@ -178,11 +178,12 @@ jobs:
           usesh: true
           mem: 3000
           prepare: |
-            pkg install -y -f curl node libnghttp2 llvm # Install the llvm package to fix the libclang error
+            pkg install -y -f curl node libnghttp2 llvm cmake # Install the llvm package to fix the libclang error
             curl -qL https://www.npmjs.com/install.sh | sh
             npm install --location=global --ignore-scripts yarn
             curl https://sh.rustup.rs -sSf --output rustup.sh
             sh rustup.sh -y --profile minimal --default-toolchain beta
+            rustup component add rustfmt
             export PATH="/usr/local/cargo/bin:$PATH"
             echo "~~~~ rustc --version ~~~~"
             rustc --version
