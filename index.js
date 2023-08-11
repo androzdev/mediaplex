@@ -133,6 +133,7 @@ function readMetadata(result) {
 }
 
 const { CodecType, probe, OpusEncoder, getOpusVersion } = binding;
+const { version } = require('./package.json');
 
 module.exports = {
     CodecType,
@@ -141,4 +142,5 @@ module.exports = {
     readMetadata,
     OpusEncoder,
     getOpusVersion,
+    version
 };
