@@ -76,16 +76,16 @@ Running "OpusEncoder Benchmark" suite...
 Progress: 100%
 
   mediaplex:
-    3 305 ops/s, ±0.15%   | 21.18% slower
+    3 516 ops/s, ±0.20%   | 14.45% slower
 
   @discordjs/opus:
-    3 174 ops/s, ±0.09%   | 24.3% slower
+    3 155 ops/s, ±0.35%   | 23.24% slower
 
   opusscript:
-    4 193 ops/s, ±0.16%   | fastest
+    4 110 ops/s, ±2.18%   | fastest
 
   opusscript (no wasm):
-    260 ops/s, ±0.55%     | slowest, 93.8% slower
+    256 ops/s, ±0.30%     | slowest, 93.77% slower
 
 Finished 4 cases!
   Fastest: opusscript
