@@ -10,12 +10,12 @@ const { Readable } = require('stream');
 /**
  * Attempt to probe a Readable stream
  * @param {Readable} stream The readable stream to probe
- * @param {number} [probeSize] The number of bytes to read
+ * @param {number} [probeSize] The number of bytes to read. Defaults to 10 MB
  * @returns {Promise<StreamProbeResult>}
  */
 async function probeStream(
     stream,
-    probeSize = 1024
+    probeSize = 1024 * 1024 * 10
 ) {
     return new Promise((resolve, reject) => {
         // preconditions
@@ -33,7 +33,7 @@ async function probeStream(
 
         /**
          * @type {binding.ProbeResult}
-         */
+        */
         let resolved = null;
 
         const finish = (data) => {
@@ -62,17 +62,22 @@ async function probeStream(
         };
 
         const onClose = () => {
-            if (!resolved) {
-                finish(null);
-            }
+            finish(resolved || null);
         };
+
 
         const onData = (buffer) => {
             readBuffer = Buffer.concat([readBuffer, buffer]);
 
             try {
                 const result = binding.probe(readBuffer);
-                return finish(result);
+                if (result != null) resolved = result;
+
+                if (result && ![
+                    CodecType.MP3,
+                    CodecType.MP1,
+                    CodecType.MP2,
+                ].some(c => resolved.codec === c)) return finish(result);
             } catch { }
 
             if (readBuffer.length >= probeSize) {

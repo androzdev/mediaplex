@@ -14,7 +14,7 @@ pub struct JsProbeResult {
   /// The number of frames per block
   pub frames_per_block: u32,
   /// The codec type
-  #[napi(ts_type="CodecType")]
+  #[napi(ts_type = "CodecType")]
   pub codec: JsCodecType,
   /// The number of frames
   pub n_frames: u32,
