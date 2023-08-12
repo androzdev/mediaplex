@@ -62,23 +62,16 @@ async function probeStream(
         };
 
         const onClose = () => {
-            finish(resolved || null);
-        };
-
-
-        const onData = (buffer) => {
-            readBuffer = Buffer.concat([readBuffer, buffer]);
-
             try {
                 const result = binding.probe(readBuffer);
                 if (result != null) resolved = result;
-
-                if (result && ![
-                    CodecType.MP3,
-                    CodecType.MP1,
-                    CodecType.MP2,
-                ].some(c => resolved.codec === c)) return finish(result);
             } catch { }
+
+            finish(resolved || null);
+        };
+
+        const onData = (buffer) => {
+            readBuffer = Buffer.concat([readBuffer, buffer]);
 
             if (readBuffer.length >= probeSize) {
                 stream.off('data', onData);

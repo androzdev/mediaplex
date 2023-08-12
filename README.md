@@ -31,7 +31,7 @@ You can use Mediaplex to probe media files for metadata. Here's an example:
 const mediaplex = require('mediaplex');
 
 const stream = createReadStream('./media.mp3');
-const { result } = mediaplex.probeStream(stream);
+const { result } = await mediaplex.probeStream(stream);
 
 console.log(result);
 
@@ -58,6 +58,15 @@ console.log(result);
 ```
 
 This will output an object containing information about the media file, including the number of channels, sample rate, codec, duration, and metadata.
+The default probe size is `10MB`, but you can adjust this as needed by passing the second argument to `probeStream`:
+
+```js
+// probe only 1024 bytes
+const { result } = await mediaplex.probeStream(stream, 1024);
+
+// probe 5 MB
+const { result } = await mediaplex.probeStream(stream, 5 * 1024 * 1024);
+```
 
 ## Opus Encoder
 
@@ -74,7 +83,7 @@ const encoded = encoder.encode(buffer);
 const decoded = encoder.decode(encoded);
 ```
 
-You can use `OpusEncoder` to encode pcm data to opus and decode opus data to pcm format.
+You can use `OpusEncoder` to encode pcm data to opus and decode opus data to pcm format. Stream interface is provided by [@discord-player/opus](https://npm.im/@discord-player/opus) package.
 
 #### Opus Benchmarks
 
