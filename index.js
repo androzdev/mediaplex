@@ -1,5 +1,6 @@
 const binding = require('./js-binding');
 const { Readable } = require('stream');
+const { Worker } = require('worker_threads');
 
 /**
  * @typedef StreamProbeResult
@@ -61,9 +62,9 @@ async function probeStream(
             }
         };
 
-        const onClose = () => {
+        const onClose = async () => {
             try {
-                const result = binding.probe(readBuffer);
+                const result = await toThread(readBuffer);
                 if (result != null) resolved = result;
             } catch { }
 
@@ -84,6 +85,65 @@ async function probeStream(
         stream.on('data', onData);
         stream.once('close', onClose);
         stream.once('end', onClose);
+    });
+}
+
+async function toThread(buffer) {
+    return new Promise((resolve, reject) => {
+        const workerScript = ';('.concat((function MEDIAPLEX_PROBE_METADATA() {
+            const { probe } = require('./js-binding');
+            const { parentPort, workerData } = require('worker_threads');
+
+            if (!parentPort || !workerData) {
+                throw new Error('Could not probe on worker thread');
+            }
+
+            try {
+                const result = probe(workerData);
+                parentPort.postMessage({
+                    error: false,
+                    value: result
+                });
+            } catch (err) {
+                parentPort.postMessage({
+                    error: true,
+                    value: err
+                });
+            } finally {
+                process.exit(0);
+            }
+        }).toString()).concat(')();');
+
+        const worker = new Worker(workerScript, {
+            eval: true,
+            workerData: buffer
+        });
+
+        worker.unref();
+
+        const terminator = setTimeout(() => {
+            if (markAsResolved) return;
+            worker.terminate().catch(() => null);
+        }, 5000).unref();
+
+        const markAsResolved = () => clearTimeout(terminator);
+
+        worker.once('message', (result) => {
+            markAsResolved();
+            if (result.error) {
+                reject(result.value);
+            } else {
+                resolve(result.value);
+            }
+
+            worker.terminate().catch(() => null);
+        });
+
+        worker.once('error', (e) => {
+            markAsResolved();
+            reject(e);
+            worker.terminate().catch(() => null);
+        });
     });
 }
 
