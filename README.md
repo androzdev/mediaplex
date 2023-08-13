@@ -68,6 +68,11 @@ const { result } = await mediaplex.probeStream(stream, 1024);
 const { result } = await mediaplex.probeStream(stream, 5 * 1024 * 1024);
 ```
 
+// add a note
+
+> ⚠️
+> Probing a stream is non-blocking as it is done in a worker thread. But probing a buffer is a blocking operation.
+
 ## Opus Encoder
 
 Mediaplex also includes an Opus encoder/decoder. Here's an example:
