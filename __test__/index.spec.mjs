@@ -4,7 +4,7 @@ import { readFile } from 'fs/promises';
 
 test('should probe mp3 buffer', async (t) => {
   const chunk = await readFile('./__test__/data/head.mp3');
-  const probeResult = probe(chunk);
+  const probeResult = await probe(chunk);
 
   t.deepEqual(probeResult, {
     channels: 2,
