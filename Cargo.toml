@@ -12,6 +12,7 @@ napi = { git = "https://github.com/napi-rs/napi-rs", default-features = false, f
     "napi4",
 ] }
 napi-derive = { git = "https://github.com/napi-rs/napi-rs" }
+samplerate = "0.2.4"
 symphonia = { version = "0.5.3", features = ["all"] }
 
 [build-dependencies]

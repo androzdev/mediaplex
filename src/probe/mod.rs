@@ -1,5 +1,5 @@
 use napi::bindgen_prelude::*;
-use napi::Result;
+use napi::{Result, Task};
 use symphonia::core::meta::MetadataRevision;
 use symphonia::core::{
   audio::Channels, codecs::*, io::MediaSourceStream, probe::Hint, units::TimeBase,
@@ -124,8 +124,34 @@ pub struct MetadataField {
   pub value: String,
 }
 
+#[napi(catch_unwind, ts_return_type = "Promise<ProbeResult>")]
+pub fn probe(data: Buffer) -> AsyncTask<ProbeTask> {
+  return AsyncTask::new(ProbeTask { input: data });
+}
+
 #[napi(catch_unwind)]
-pub fn probe(data: Buffer) -> Result<JsProbeResult> {
+pub fn probe_sync(data: Buffer) -> Result<JsProbeResult> {
+  return probe_inner(data.to_vec());
+}
+
+pub struct ProbeTask {
+  input: Buffer,
+}
+
+impl Task for ProbeTask {
+  type Output = JsProbeResult;
+  type JsValue = JsProbeResult;
+
+  fn compute(&mut self) -> Result<Self::Output> {
+    probe_inner(self.input.to_vec())
+  }
+
+  fn resolve(&mut self, env: Env, output: Self::Output) -> Result<Self::JsValue> {
+    Ok(output)
+  }
+}
+
+fn probe_inner(data: Vec<u8>) -> Result<JsProbeResult> {
   // Create a Cursor over the data.
   let cursor = std::io::Cursor::new(data.to_vec());
 

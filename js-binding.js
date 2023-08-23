@@ -252,9 +252,10 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { getOpusVersion, OpusEncoder, CodecType, probe } = nativeBinding
+const { getOpusVersion, OpusEncoder, CodecType, probe, probeSync } = nativeBinding
 
 module.exports.getOpusVersion = getOpusVersion
 module.exports.OpusEncoder = OpusEncoder
 module.exports.CodecType = CodecType
 module.exports.probe = probe
+module.exports.probeSync = probeSync

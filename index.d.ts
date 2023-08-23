@@ -17,9 +17,20 @@ export interface Metadata {
   bpm: number | null;
 }
 
+export interface ProbeStreamOptions {
+  /**
+   * If true, mediaplex will probe the stream synchronously. Defaults to false.
+   */
+  sync?: boolean;
+  /**
+   * The maximum number of bytes to read from the stream. Defaults to 2MB.
+   */
+  probeSize?: number;
+}
+
 export * from './js-binding';
 export function probeStream(
   stream: Readable,
-  probeSize?: number
+  options?: ProbeStreamOptions
 ): Promise<StreamProbeResult>;
 export function readMetadata(result: ProbeResult): Metadata;

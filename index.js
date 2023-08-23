@@ -1,6 +1,5 @@
 const binding = require('./js-binding');
 const { Readable } = require('stream');
-const { Worker } = require('worker_threads');
 
 /**
  * @typedef StreamProbeResult
@@ -11,15 +10,20 @@ const { Worker } = require('worker_threads');
 /**
  * Attempt to probe a Readable stream
  * @param {Readable} stream The readable stream to probe
- * @param {number} [probeSize] The number of bytes to read. Defaults to 10 MB
+ * @param {Object} options The options
+ * @param {number} [options.probeSize=2 * 1024 * 1024] The amount of bytes to read from the stream. Defaults to 2 MB.
+ * @param {boolean} [options.sync=false] Whether to probe synchronously. Defaults to false.
  * @returns {Promise<StreamProbeResult>}
  */
 async function probeStream(
     stream,
-    probeSize = 1024 * 1024 * 10
+    options = {
+        probeSize: 2 * 1024 * 1024,
+        sync: false
+    }
 ) {
+    const { probeSize = 2 * 1024 * 1024, sync = false } = options;
     return new Promise((resolve, reject) => {
-        // preconditions
         if (stream.readableObjectMode) {
             reject(new Error('Cannot probe a readable stream in object mode'));
             return;
@@ -64,7 +68,8 @@ async function probeStream(
 
         const onClose = async () => {
             try {
-                const result = await toThread(readBuffer);
+                const probeInner = sync ? probeSync : probe;
+                const result = await probeInner(readBuffer);
                 if (result != null) resolved = result;
             } catch { }
 
@@ -85,65 +90,6 @@ async function probeStream(
         stream.on('data', onData);
         stream.once('close', onClose);
         stream.once('end', onClose);
-    });
-}
-
-async function toThread(buffer) {
-    return new Promise((resolve, reject) => {
-        const workerScript = ';('.concat((function MEDIAPLEX_PROBE_METADATA() {
-            const { probe } = require('./js-binding');
-            const { parentPort, workerData } = require('worker_threads');
-
-            if (!parentPort || !workerData) {
-                throw new Error('Could not probe on worker thread');
-            }
-
-            try {
-                const result = probe(workerData);
-                parentPort.postMessage({
-                    error: false,
-                    value: result
-                });
-            } catch (err) {
-                parentPort.postMessage({
-                    error: true,
-                    value: err
-                });
-            } finally {
-                process.exit(0);
-            }
-        }).toString()).concat(')();');
-
-        const worker = new Worker(workerScript, {
-            eval: true,
-            workerData: buffer
-        });
-
-        worker.unref();
-
-        const terminator = setTimeout(() => {
-            if (markAsResolved) return;
-            worker.terminate().catch(() => null);
-        }, 5000).unref();
-
-        const markAsResolved = () => clearTimeout(terminator);
-
-        worker.once('message', (result) => {
-            markAsResolved();
-            if (result.error) {
-                reject(result.value);
-            } else {
-                resolve(result.value);
-            }
-
-            worker.terminate().catch(() => null);
-        });
-
-        worker.once('error', (e) => {
-            markAsResolved();
-            reject(e);
-            worker.terminate().catch(() => null);
-        });
     });
 }
 
@@ -190,12 +136,13 @@ function readMetadata(result) {
     return res;
 }
 
-const { CodecType, probe, OpusEncoder, getOpusVersion } = binding;
+const { CodecType, probe, probeSync, OpusEncoder, getOpusVersion } = binding;
 const { version } = require('./package.json');
 
 module.exports = {
     CodecType,
     probe,
+    probeSync,
     probeStream,
     readMetadata,
     OpusEncoder,

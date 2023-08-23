@@ -92,7 +92,8 @@ export interface MetadataField {
   name: string
   value: string
 }
-export function probe(data: Buffer): ProbeResult
+export function probe(data: Buffer): Promise<ProbeResult>
+export function probeSync(data: Buffer): ProbeResult
 export type JsOpusEncoder = OpusEncoder
 export class OpusEncoder {
   constructor(sampleRate: number, channels: number)
