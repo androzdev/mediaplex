@@ -157,13 +157,7 @@ impl JsOpusEncoder {
       ));
     }
 
-    let decoded_length = decoded_samples * self.channels;
-
-    let out_slice = unsafe {
-      slice::from_raw_parts_mut(out.as_mut_ptr() as *mut u8, decoded_length as usize * 2)
-    };
-
-    let out_vec = unsafe { std::mem::transmute::<&mut [i16], &mut [u8]>(&mut out) };
+    let out_vec = unsafe { std::mem::transmute::<&mut [i16], &mut [u8]>(&mut out.as_mut()) };
 
     Ok(out_vec.to_vec().into())
   }
