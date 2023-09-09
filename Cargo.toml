@@ -7,7 +7,6 @@ version = "0.0.0"
 crate-type = ["cdylib"]
 
 [dependencies]
-# dasp = { version = "0.11.0" }
 napi = { git = "https://github.com/napi-rs/napi-rs", default-features = false, features = [
     "napi4",
 ] }

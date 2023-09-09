@@ -2,6 +2,8 @@ import { Buffer } from 'node:buffer';
 import djs from '@discordjs/opus';
 import opusscript from 'opusscript';
 import mediaplex from '../index.js';
+import * as evanOpus from '@evan/opus';
+import * as evanOpusWasm from '@evan/opus/wasm/index.mjs';
 
 export const generatePCMSample = (sampleSize) => {
     const buffer = Buffer.alloc(sampleSize);
@@ -57,4 +59,22 @@ export const createDjsEncoder = (config) => new djs.OpusEncoder(config.SAMPLE_RA
 export const createOpusScriptWasmEncoder = (config) => new opusscript(config.SAMPLE_RATE, config.CHANNELS, opusscript.Application.AUDIO);
 export const createOpusScriptAsmEncoder = (config) => new opusscript(config.SAMPLE_RATE, config.CHANNELS, opusscript.Application.AUDIO, {
     wasm: false
+});
+export const createEvanOpusEncoder = (config) => new evanOpus.Encoder({
+    application: 'voip',
+    channels: config.CHANNELS,
+    sample_rate: config.SAMPLE_RATE
+});
+export const createEvanOpusDecoder = (config) => new evanOpus.Decoder({
+    channels: config.CHANNELS,
+    sample_rate: config.SAMPLE_RATE
+});
+export const createEvanOpusEncoderWasm = (config) => new evanOpusWasm.Encoder({
+    application: 'voip',
+    channels: config.CHANNELS,
+    sample_rate: config.SAMPLE_RATE
+});
+export const createEvanOpusDecoderWasm = (config) => new evanOpusWasm.Decoder({
+    channels: config.CHANNELS,
+    sample_rate: config.SAMPLE_RATE
 });

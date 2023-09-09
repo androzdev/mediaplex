@@ -196,3 +196,5 @@ Cargo.lock
 
 *.node
 dev/
+./src/dasp/*
+./src/decoder/*

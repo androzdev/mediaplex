@@ -1,5 +1,5 @@
 import b from 'benny';
-import { createDjsEncoder, createMediaplexEncoder, createOpusScriptAsmEncoder, createOpusScriptWasmEncoder, generatePCMSample } from './common.mjs';
+import { createDjsEncoder, createMediaplexEncoder, createOpusScriptAsmEncoder, createOpusScriptWasmEncoder, generatePCMSample, createEvanOpusEncoder, createEvanOpusEncoderWasm } from './common.mjs';
 
 const config = {
     FRAME_SIZE: 960,
@@ -11,6 +11,8 @@ const mediaplexEncoder = createMediaplexEncoder(config);
 const nativeEncoder = createDjsEncoder(config);
 const wasmEncoder = createOpusScriptWasmEncoder(config);
 const asmEncoder = createOpusScriptAsmEncoder(config);
+const evanOpus = createEvanOpusEncoder(config);
+const evanOpusWasm = createEvanOpusEncoderWasm(config);
 
 const SAMPLE = generatePCMSample(config.FRAME_SIZE * config.CHANNELS * 6);
 
@@ -21,6 +23,12 @@ b.suite(
     }),
     b.add('@discordjs/opus', () => {
         nativeEncoder.encode(SAMPLE);
+    }),
+    b.add('@evan/opus', () => {
+        evanOpus.encode(SAMPLE);
+    }),
+    b.add('@evan/opus (wasm)', () => {
+        evanOpusWasm.encode(SAMPLE);
     }),
     b.add('opusscript', () => {
         wasmEncoder.encode(SAMPLE, config.FRAME_SIZE);
