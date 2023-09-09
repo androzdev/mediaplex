@@ -99,12 +99,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@napi-rs/cli@npm:^2.16.1":
-  version: 2.16.1
-  resolution: "@napi-rs/cli@npm:2.16.1"
+"@napi-rs/cli@npm:^2.16.3":
+  version: 2.16.3
+  resolution: "@napi-rs/cli@npm:2.16.3"
   bin:
     napi: scripts/index.js
-  checksum: 5f61712cf1a4002b7b9b65bc4a6f2a7df68b197cfc7024c7d28820e3b12b5e9c0baa0d85f262f25dbf928586ce01c5c06837754f9f98ef4ebafa55dd027c6837
+  checksum: 11f78b09548bc5c22df56e4fab4a87b68c2d3f2a18a55cf11e775e6a4cb5739ec0e21a14e614db2cdc2b9773cb42536c6bd00c3f85d3b461f956594f8a89ddcb
   languageName: node
   linkType: hard
 
@@ -158,10 +158,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.4.8":
-  version: 20.4.8
-  resolution: "@types/node@npm:20.4.8"
-  checksum: 86a3963c0c7af3410553d1dfa4b018a20b3cb3ab4d8e8ffe27408b6338c5de0374b0bf379bc705da2205b466daa751ccfe062f453ba9bde34fdb0e5163ca6a68
+"@types/node@npm:^20.6.0":
+  version: 20.6.0
+  resolution: "@types/node@npm:20.6.0"
+  checksum: 52611801af5cf151c6fac1963aa4a8a8ca2e388a9e9ed82b01b70bca762088ded5b32cc789c5564220d5d7dccba2b8dd34446a3d4fc74736805e1f2cf262e29d
   languageName: node
   linkType: hard
 
@@ -341,7 +341,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ava@npm:^5.1.1":
+"ava@npm:5.3.1":
   version: 5.3.1
   resolution: "ava@npm:5.3.1"
   dependencies:
@@ -1514,9 +1514,9 @@ __metadata:
   dependencies:
     "@discordjs/opus": ^0.9.0
     "@evan/opus": ^1.0.2
-    "@napi-rs/cli": ^2.16.1
-    "@types/node": ^20.4.8
-    ava: ^5.1.1
+    "@napi-rs/cli": ^2.16.3
+    "@types/node": ^20.6.0
+    ava: 5.3.1
     benny: ^3.7.1
     opusscript: ^0.1.0
   languageName: unknown

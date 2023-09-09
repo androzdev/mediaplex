@@ -100,45 +100,46 @@ $ yarn benchmark
 Running "OpusEncoder Benchmark" suite...
 
   mediaplex:
-    3 575 ops/s, ±0.75%   | 14.82% slower
+    3 538 ops/s, ±0.63%   | 15.96% slower
 
   @discordjs/opus:
-    3 169 ops/s, ±0.43%   | 24.49% slower
+    3 168 ops/s, ±0.53%   | 24.75% slower
 
   @evan/opus:
-    3 310 ops/s, ±0.18%   | 21.13% slower
+    3 283 ops/s, ±0.25%   | 22.02% slower
 
   @evan/opus (wasm):
-    2 259 ops/s, ±0.17%   | 46.18% slower
+    2 242 ops/s, ±0.39%   | 46.75% slower
 
   opusscript:
-    4 197 ops/s, ±0.52%   | fastest
+    4 210 ops/s, ±0.20%   | fastest
 
   opusscript (no wasm):
-    266 ops/s, ±0.55%     | slowest, 93.66% slower
+    245 ops/s, ±3.69%     | slowest, 94.18% slower
 
 Finished 6 cases!
   Fastest: opusscript
   Slowest: opusscript (no wasm)
+
 Running "OpusDecoder Benchmark" suite...
 
   mediaplex:
-    9 951 ops/s, ±0.42%    | 16.12% slower
+    10 726 ops/s, ±0.50%   | 9.42% slower
 
   @discordjs/opus:
-    11 864 ops/s, ±0.49%   | fastest
+    11 841 ops/s, ±0.55%   | fastest
 
   @evan/opus:
-    11 470 ops/s, ±0.39%   | 3.32% slower
+    11 382 ops/s, ±0.46%   | 3.88% slower
 
   @evan/opus (wasm):
-    7 436 ops/s, ±0.35%    | 37.32% slower
+    7 461 ops/s, ±0.32%    | 36.99% slower
 
   opusscript:
-    6 101 ops/s, ±0.31%    | 48.58% slower
+    6 138 ops/s, ±0.38%    | 48.16% slower
 
   opusscript (no wasm):
-    2 261 ops/s, ±0.24%    | slowest, 80.94% slower
+    2 252 ops/s, ±0.73%    | slowest, 80.98% slower
 
 Finished 6 cases!
   Fastest: @discordjs/opus

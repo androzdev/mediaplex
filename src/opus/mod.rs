@@ -1,3 +1,5 @@
+use core::slice;
+
 use napi::bindgen_prelude::*;
 use napi::Error;
 use napi::Result;
@@ -28,11 +30,8 @@ pub fn get_opus_version() -> String {
   let version_string = unsafe { opus_get_version_string() };
   let version_cstr = unsafe { core::ffi::CStr::from_ptr(version_string) };
 
-  // fallback to libopus v1.4 (master), it was cloned from master branch
-  let version_string = version_cstr
-    .to_str()
-    .unwrap_or("libopus v1.4 (master)")
-    .to_owned();
+  // fallback to commit hash
+  let version_string = version_cstr.to_str().unwrap_or("101a71e0").to_owned();
 
   version_string
 }
@@ -109,11 +108,7 @@ impl JsOpusEncoder {
 
     let mut out_buffer = vec![0u8; MAX_PACKET_SIZE];
 
-    let pcm = unsafe {
-      let ptr = data.as_ptr() as *const i16;
-      let len = data.len() / 2;
-      std::slice::from_raw_parts(ptr, len)
-    };
+    let pcm = unsafe { std::mem::transmute::<&[u8], &[i16]>(&data) };
 
     let frame_size = data.len() / 2 / (self.channels as usize);
 
@@ -164,12 +159,13 @@ impl JsOpusEncoder {
 
     let decoded_length = decoded_samples * self.channels;
 
-    let out = unsafe {
-      let ptr = out.as_ptr() as *const u8;
-      std::slice::from_raw_parts(ptr, decoded_length as usize * 4)
+    let out_slice = unsafe {
+      slice::from_raw_parts_mut(out.as_mut_ptr() as *mut u8, decoded_length as usize * 2)
     };
 
-    Ok(out.to_vec().into())
+    let out_vec = unsafe { std::mem::transmute::<&mut [i16], &mut [u8]>(&mut out) };
+
+    Ok(out_vec.to_vec().into())
   }
 
   #[napi(catch_unwind)]
