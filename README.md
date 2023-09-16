@@ -58,7 +58,7 @@ console.log(result);
 ```
 
 This will output an object containing information about the media file, including the number of channels, sample rate, codec, duration, and metadata.
-The default probe size is `10MB`, but you can adjust this as needed by passing the second argument to `probeStream`:
+The default probe size is `2MB`, but you can adjust this as needed by passing the second argument to `probeStream`:
 
 ```js
 // probe only 1024 bytes
@@ -67,11 +67,6 @@ const { result } = await mediaplex.probeStream(stream, 1024);
 // probe 5 MB
 const { result } = await mediaplex.probeStream(stream, 5 * 1024 * 1024);
 ```
-
-// add a note
-
-> ⚠️
-> Probing a stream is non-blocking as it is done in a worker thread. But probing a buffer is a blocking operation.
 
 ## Opus Encoder
 
