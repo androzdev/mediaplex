@@ -37,7 +37,6 @@ jobs:
             build: |
               yarn build --target i686-pc-windows-msvc
               yarn test
-              yarn benchmark
             target: i686-pc-windows-msvc
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu

@@ -75,7 +75,7 @@ const { result } = await mediaplex.probeStream(stream, 5 * 1024 * 1024);
 
 ## Opus Encoder
 
-Mediaplex also includes an Opus encoder/decoder. Here's an example:
+Mediaplex also includes an Opus encoder/decoder, which can be used as a drop-in replacement for [`@discordjs/opus`](https://github.com/discordjs/opus). Here's an example on how to use it:
 
 ```js
 const { OpusEncoder, getOpusVersion } = require('mediaplex');
