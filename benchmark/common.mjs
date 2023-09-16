@@ -56,7 +56,9 @@ export const generateOpusSample = () => {
 
 export const createMediaplexEncoder = (config) => new mediaplex.OpusEncoder(config.SAMPLE_RATE, config.CHANNELS);
 export const createDjsEncoder = (config) => new djs.OpusEncoder(config.SAMPLE_RATE, config.CHANNELS);
-export const createOpusScriptWasmEncoder = (config) => new opusscript(config.SAMPLE_RATE, config.CHANNELS, opusscript.Application.AUDIO);
+export const createOpusScriptWasmEncoder = (config) => new opusscript(config.SAMPLE_RATE, config.CHANNELS, opusscript.Application.AUDIO, {
+    wasm: true
+});
 export const createOpusScriptAsmEncoder = (config) => new opusscript(config.SAMPLE_RATE, config.CHANNELS, opusscript.Application.AUDIO, {
     wasm: false
 });

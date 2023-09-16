@@ -90,60 +90,53 @@ const decoded = encoder.decode(encoded);
 
 You can use `OpusEncoder` to encode pcm data to opus and decode opus data to pcm format. Stream interface is provided by [@discord-player/opus](https://npm.im/@discord-player/opus) package.
 
-#### Opus Benchmarks
-
-Mediaplex includes benchmarks for the opus encoder/decoder. Here are the results of the benchmarks on a Windows 11 machine with an i7-8700 3.2GHz processor:
+#### Opus benchmark with other equivalent libraries
 
 ```js
 $ yarn benchmark
 
-Running "OpusEncoder Benchmark" suite...
+cpu: Intel(R) Core(TM) i7-8700 CPU @ 3.20GHz
+runtime: node v20.6.1 (x64-win32)
 
-  mediaplex:
-    3 538 ops/s, ±0.63%   | 15.96% slower
+benchmark                 time (avg)             (min … max)       p75       p99      p995
+------------------------------------------------------------ -----------------------------
+• OpusEncoder
+------------------------------------------------------------ -----------------------------
+mediaplex             282.31 µs/iter   (274.4 µs … 746.9 µs)  279.5 µs  378.7 µs  391.3 µs
+@discordjs/opus       315.47 µs/iter     (310 µs … 460.4 µs)  314.1 µs  384.6 µs  396.8 µs
+@evan/opus            304.59 µs/iter   (299.9 µs … 483.7 µs)  303.5 µs  357.4 µs  376.9 µs
+@evan/opus (wasm)     469.27 µs/iter     (440.1 µs … 1.3 ms)    447 µs  964.1 µs   1.03 ms
+opusscript            249.68 µs/iter   (235.3 µs … 692.1 µs)  240.7 µs  499.5 µs  551.3 µs
+opusscript (no wasm)    4.01 ms/iter     (3.84 ms … 4.69 ms)    4.1 ms   4.55 ms   4.69 ms
 
-  @discordjs/opus:
-    3 168 ops/s, ±0.53%   | 24.75% slower
+summary for OpusEncoder
+  opusscript
+   1.13x faster than mediaplex
+   1.22x faster than @evan/opus
+   1.26x faster than @discordjs/opus
+   1.88x faster than @evan/opus (wasm)
+   16.06x faster than opusscript (no wasm)
 
-  @evan/opus:
-    3 283 ops/s, ±0.25%   | 22.02% slower
 
-  @evan/opus (wasm):
-    2 242 ops/s, ±0.39%   | 46.75% slower
+cpu: Intel(R) Core(TM) i7-8700 CPU @ 3.20GHz
+runtime: node v20.6.1 (x64-win32)
 
-  opusscript:
-    4 210 ops/s, ±0.20%   | fastest
+benchmark                 time (avg)             (min … max)       p75       p99      p995
+------------------------------------------------------------ -----------------------------
+• OpusDecoder
+------------------------------------------------------------ -----------------------------
+mediaplex              92.94 µs/iter     (84.8 µs … 1.22 ms)   90.8 µs  143.5 µs  161.8 µs
+@discordjs/opus        87.75 µs/iter      (81 µs … 376.1 µs)   86.3 µs  130.2 µs    142 µs
+@evan/opus             91.22 µs/iter    (84.7 µs … 320.2 µs)   89.9 µs  133.4 µs    142 µs
+@evan/opus (wasm)     146.92 µs/iter   (130.3 µs … 966.5 µs)  137.7 µs  298.7 µs  309.3 µs
+opusscript            169.56 µs/iter   (159.5 µs … 448.9 µs)  167.2 µs  232.6 µs  258.6 µs
+opusscript (no wasm)  482.66 µs/iter    (443.7 µs … 1.56 ms)  456.5 µs  965.8 µs  995.3 µs
 
-  opusscript (no wasm):
-    245 ops/s, ±3.69%     | slowest, 94.18% slower
-
-Finished 6 cases!
-  Fastest: opusscript
-  Slowest: opusscript (no wasm)
-
-Running "OpusDecoder Benchmark" suite...
-
-  mediaplex:
-    10 726 ops/s, ±0.50%   | 9.42% slower
-
-  @discordjs/opus:
-    11 841 ops/s, ±0.55%   | fastest
-
-  @evan/opus:
-    11 382 ops/s, ±0.46%   | 3.88% slower
-
-  @evan/opus (wasm):
-    7 461 ops/s, ±0.32%    | 36.99% slower
-
-  opusscript:
-    6 138 ops/s, ±0.38%    | 48.16% slower
-
-  opusscript (no wasm):
-    2 252 ops/s, ±0.73%    | slowest, 80.98% slower
-
-Finished 6 cases!
-  Fastest: @discordjs/opus
-  Slowest: opusscript (no wasm)
+summary for OpusDecoder
+  @discordjs/opus
+   1.04x faster than @evan/opus
+   1.06x faster than mediaplex
+   1.67x faster than @evan/opus (wasm)
+   1.93x faster than opusscript
+   5.5x faster than opusscript (no wasm)
 ```
-
-These benchmarks compare the performance of Mediaplex's Opus encoder/decoder to other popular Opus libraries.

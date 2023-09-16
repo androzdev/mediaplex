@@ -37,6 +37,7 @@ jobs:
             build: |
               yarn build --target i686-pc-windows-msvc
               yarn test
+              yarn benchmark
             target: i686-pc-windows-msvc
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
@@ -202,6 +203,7 @@ jobs:
             yarn build
             strip -x *.node
             yarn test
+            yarn benchmark
             rm -rf node_modules
             rm -rf target
             rm -rf .yarn/cache
@@ -248,6 +250,8 @@ jobs:
         shell: bash
       - name: Test bindings
         run: yarn test
+      - name: Benchmark bindings
+        run: yarn benchmark
   test-linux-x64-gnu-binding:
     name: Test bindings on Linux-x64-gnu - node@${{ matrix.node }}
     needs:
@@ -280,6 +284,8 @@ jobs:
         shell: bash
       - name: Test bindings
         run: docker run --rm -v $(pwd):/build -w /build node:${{ matrix.node }}-slim yarn test
+      - name: Benchmark bindings
+        run: docker run --rm -v $(pwd):/build -w /build node:${{ matrix.node }}-slim yarn benchmark
   # test-linux-x64-musl-binding:
   #   name: Test bindings on x86_64-unknown-linux-musl - node@${{ matrix.node }}
   #   needs:
@@ -427,6 +433,7 @@ jobs:
           run: |
             set -e
             yarn test
+            yarn benchmark
             ls -la
   universal-macOS:
     name: Build universal macOS binary

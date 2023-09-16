@@ -1,5 +1,15 @@
-import b from 'benny';
-import { createDjsEncoder, createMediaplexEncoder, createOpusScriptAsmEncoder, createOpusScriptWasmEncoder, generateOpusSample, createEvanOpusDecoder, createEvanOpusDecoderWasm } from './common.mjs';
+import * as mitata from 'mitata';
+
+// prettier-ignore
+import {
+    createDjsEncoder,
+    createMediaplexEncoder,
+    createOpusScriptAsmEncoder,
+    createOpusScriptWasmEncoder,
+    generateOpusSample,
+    createEvanOpusDecoder,
+    createEvanOpusDecoderWasm
+} from './common.mjs';
 
 const config = {
     FRAME_SIZE: 960,
@@ -16,26 +26,25 @@ const evanOpusWasm = createEvanOpusDecoderWasm(config);
 
 const SAMPLE = generateOpusSample();
 
-b.suite(
-    'OpusDecoder Benchmark',
-    b.add('mediaplex', () => {
+mitata.group('OpusDecoder', () => {
+    mitata.bench('mediaplex', () => {
         mediaplexEncoder.decode(SAMPLE);
-    }),
-    b.add('@discordjs/opus', () => {
+    });
+    mitata.bench('@discordjs/opus', () => {
         nativeEncoder.decode(SAMPLE);
-    }),
-    b.add('@evan/opus', () => {
+    });
+    mitata.bench('@evan/opus', () => {
         evanOpus.decode(SAMPLE);
-    }),
-    b.add('@evan/opus (wasm)', () => {
+    });
+    mitata.bench('@evan/opus (wasm)', () => {
         evanOpusWasm.decode(SAMPLE);
-    }),
-    b.add('opusscript', () => {
+    });
+    mitata.bench('opusscript', () => {
         wasmEncoder.decode(SAMPLE);
-    }),
-    b.add('opusscript (no wasm)', () => {
+    });
+    mitata.bench('opusscript (no wasm)', () => {
         asmEncoder.decode(SAMPLE);
-    }),
-    b.cycle(),
-    b.complete(),
-);
+    });
+});
+
+await mitata.run();

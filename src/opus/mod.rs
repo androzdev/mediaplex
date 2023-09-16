@@ -31,7 +31,7 @@ pub fn get_opus_version() -> String {
   let version_cstr = unsafe { core::ffi::CStr::from_ptr(version_string) };
 
   // fallback to commit hash
-  let version_string = version_cstr.to_str().unwrap_or("101a71e0").to_owned();
+  let version_string = version_cstr.to_str().unwrap_or("82ac57d").to_owned();
 
   version_string
 }
