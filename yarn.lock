@@ -41,6 +41,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@evan/wasm@npm:^0.0.95":
+  version: 0.0.95
+  resolution: "@evan/wasm@npm:0.0.95"
+  checksum: 64f7eb1ed47b6fd6fbf6ca93878c92e95de8f29f318cd7f2e0afc3d9cf7222f98538769d6b04854c6089b1622b975710462e67c1f909831410beaf11cab388ef
+  languageName: node
+  linkType: hard
+
 "@isaacs/cliui@npm:^8.0.2":
   version: 8.0.2
   resolution: "@isaacs/cliui@npm:8.0.2"
@@ -1327,6 +1334,7 @@ __metadata:
   dependencies:
     "@discordjs/opus": ^0.9.0
     "@evan/opus": ^1.0.2
+    "@evan/wasm": ^0.0.95
     "@napi-rs/cli": ^2.16.3
     "@types/node": ^20.6.0
     ava: 5.3.1

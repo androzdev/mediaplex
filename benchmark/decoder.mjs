@@ -8,7 +8,8 @@ import {
     createOpusScriptWasmEncoder,
     generateOpusSample,
     createEvanOpusDecoder,
-    createEvanOpusDecoderWasm
+    createEvanOpusDecoderWasm,
+    createSimdEvanOpusDecoder
 } from './common.mjs';
 
 const config = {
@@ -23,6 +24,7 @@ const wasmEncoder = createOpusScriptWasmEncoder(config);
 const asmEncoder = createOpusScriptAsmEncoder(config);
 const evanOpus = createEvanOpusDecoder(config);
 const evanOpusWasm = createEvanOpusDecoderWasm(config);
+const evanWasmOpus = createSimdEvanOpusDecoder(config);
 
 const SAMPLE = generateOpusSample();
 
@@ -33,17 +35,20 @@ mitata.group('OpusDecoder', () => {
     mitata.bench('@discordjs/opus', () => {
         nativeEncoder.decode(SAMPLE);
     });
+    mitata.bench('opusscript', () => {
+        wasmEncoder.decode(SAMPLE);
+    });
+    mitata.bench('opusscript (no wasm)', () => {
+        asmEncoder.decode(SAMPLE);
+    });
     mitata.bench('@evan/opus', () => {
         evanOpus.decode(SAMPLE);
     });
     mitata.bench('@evan/opus (wasm)', () => {
         evanOpusWasm.decode(SAMPLE);
     });
-    mitata.bench('opusscript', () => {
-        wasmEncoder.decode(SAMPLE);
-    });
-    mitata.bench('opusscript (no wasm)', () => {
-        asmEncoder.decode(SAMPLE);
+    mitata.bench('@evan/wasm', () => {
+        evanWasmOpus.decode(SAMPLE);
     });
 });
 

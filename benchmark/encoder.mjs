@@ -7,7 +7,8 @@ import {
     createOpusScriptWasmEncoder,
     generatePCMSample,
     createEvanOpusEncoder,
-    createEvanOpusEncoderWasm
+    createEvanOpusEncoderWasm,
+    createSimdEvanOpusEncoder
 } from './common.mjs';
 
 const config = {
@@ -22,6 +23,7 @@ const wasmEncoder = createOpusScriptWasmEncoder(config);
 const asmEncoder = createOpusScriptAsmEncoder(config);
 const evanOpus = createEvanOpusEncoder(config);
 const evanOpusWasm = createEvanOpusEncoderWasm(config);
+const evanWasmOpus = createSimdEvanOpusEncoder(config);
 
 const SAMPLE = generatePCMSample(config.FRAME_SIZE * config.CHANNELS * 6);
 
@@ -32,17 +34,20 @@ mitata.group('OpusEncoder', () => {
     mitata.bench('@discordjs/opus', () => {
         nativeEncoder.encode(SAMPLE);
     });
+    mitata.bench('opusscript', () => {
+        wasmEncoder.encode(SAMPLE, config.FRAME_SIZE);
+    });
+    mitata.bench('opusscript (no wasm)', () => {
+        asmEncoder.encode(SAMPLE, config.FRAME_SIZE);
+    });
     mitata.bench('@evan/opus', () => {
         evanOpus.encode(SAMPLE);
     });
     mitata.bench('@evan/opus (wasm)', () => {
         evanOpusWasm.encode(SAMPLE);
     });
-    mitata.bench('opusscript', () => {
-        wasmEncoder.encode(SAMPLE, config.FRAME_SIZE);
-    });
-    mitata.bench('opusscript (no wasm)', () => {
-        asmEncoder.encode(SAMPLE, config.FRAME_SIZE);
+    mitata.bench('@evan/wasm', () => {
+        evanWasmOpus.encode(SAMPLE);
     });
 });
 
