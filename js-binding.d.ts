@@ -94,6 +94,15 @@ export interface MetadataField {
 }
 export function probe(data: Buffer): Promise<ProbeResult>
 export function probeSync(data: Buffer): ProbeResult
+export interface Mp3DecodedFrame {
+  frameBytes: number
+  frameOffset: number
+  channels: number
+  hz: number
+  layer: number
+  bitrateKbps: number
+  data: Buffer
+}
 export type JsOpusEncoder = OpusEncoder
 export class OpusEncoder {
   constructor(sampleRate: number, channels: number)
@@ -104,4 +113,8 @@ export class OpusEncoder {
   applyEncoderCtl(request: number, value: number): void
   applyDecoderCtl(request: number, value: number): void
   get version(): string
+}
+export class Mp3Decoder {
+  constructor()
+  decode(data: Buffer): Mp3DecodedFrame
 }
