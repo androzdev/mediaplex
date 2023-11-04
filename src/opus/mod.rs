@@ -157,9 +157,6 @@ impl JsOpusEncoder {
       ));
     }
 
-    // the following outputs weird output
-    // let out_vec = unsafe { std::mem::transmute::<&mut [i16], &mut [u8]>(&mut out.as_mut()) };
-
     let out = unsafe {
       let ptr = out.as_ptr() as *const u8;
       std::slice::from_raw_parts(ptr, decoded_samples as usize * 4)
