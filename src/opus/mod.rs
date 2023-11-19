@@ -95,6 +95,16 @@ impl JsOpusEncoder {
     OPUS_OK as i32
   }
 
+  #[napi]
+  pub fn has_encoder(&self) -> bool {
+    !self.encoder.is_null()
+  }
+
+  #[napi]
+  pub fn has_decoder(&self) -> bool {
+    !self.decoder.is_null()
+  }
+
   #[napi(catch_unwind)]
   pub fn encode(&mut self, data: Buffer) -> Result<Buffer> {
     let status = self.ensure_encoder();
@@ -156,9 +166,6 @@ impl JsOpusEncoder {
         format!("Failed to decode: {}", get_decode_error(decoded_samples)),
       ));
     }
-
-    // the following outputs weird output
-    // let out_vec = unsafe { std::mem::transmute::<&mut [i16], &mut [u8]>(&mut out.as_mut()) };
 
     let out = unsafe {
       let ptr = out.as_ptr() as *const u8;

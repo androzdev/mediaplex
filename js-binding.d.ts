@@ -97,6 +97,8 @@ export function probeSync(data: Buffer): ProbeResult
 export type JsOpusEncoder = OpusEncoder
 export class OpusEncoder {
   constructor(sampleRate: number, channels: number)
+  hasEncoder(): boolean
+  hasDecoder(): boolean
   encode(data: Buffer): Buffer
   decode(data: Buffer): Buffer
   setBitrate(bitrate: number): void
