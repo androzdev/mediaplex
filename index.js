@@ -19,7 +19,7 @@ async function probeStream(
     stream,
     options = {
         probeSize: 2 * 1024 * 1024,
-        sync: false
+        sync: false,
     }
 ) {
     const { probeSize = 2 * 1024 * 1024, sync = false } = options;
