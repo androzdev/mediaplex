@@ -7,6 +7,7 @@ version = "0.0.0"
 crate-type = ["cdylib"]
 
 [dependencies]
+minimp3-sys = "0.3.2"
 napi = { git = "https://github.com/napi-rs/napi-rs", default-features = false, features = [
     "napi4",
 ] }

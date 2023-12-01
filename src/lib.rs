@@ -6,3 +6,4 @@ extern crate napi_derive;
 
 mod opus;
 mod probe;
+mod decoder;
