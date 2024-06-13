@@ -1,0 +1,18 @@
+{
+  "name": "mediaplex-android-arm64",
+  "version": "0.0.1",
+  "os": [
+    "android"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "main": "mediaplex.android-arm64.node",
+  "files": [
+    "mediaplex.android-arm64.node"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">= 10"
+  }
+}

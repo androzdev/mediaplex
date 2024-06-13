@@ -1,0 +1,15 @@
+{
+  "name": "mediaplex-darwin-universal",
+  "version": "0.0.1",
+  "os": [
+    "darwin"
+  ],
+  "main": "mediaplex.darwin-universal.node",
+  "files": [
+    "mediaplex.darwin-universal.node"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">= 10"
+  }
+}
