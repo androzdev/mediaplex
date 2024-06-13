@@ -56,10 +56,10 @@ The default probe size is `2MB`, but you can adjust this as needed by passing th
 
 ```js
 // probe only 1024 bytes
-const { result } = await mediaplex.probeStream(stream, 1024);
+const { result } = await mediaplex.probeStream(stream, 1024)
 
 // probe 5 MB
-const { result } = await mediaplex.probeStream(stream, 5 * 1024 * 1024);
+const { result } = await mediaplex.probeStream(stream, 5 * 1024 * 1024)
 ```
 
 ## Opus Encoder
@@ -67,14 +67,14 @@ const { result } = await mediaplex.probeStream(stream, 5 * 1024 * 1024);
 Mediaplex also includes an Opus encoder/decoder, which can be used as a drop-in replacement for [`@discordjs/opus`](https://github.com/discordjs/opus). Here's an example on how to use it:
 
 ```js
-const { OpusEncoder, getOpusVersion } = require("mediaplex");
+const { OpusEncoder, getOpusVersion } = require('mediaplex')
 
-console.log(getOpusVersion()); // libopus xxx
+console.log(getOpusVersion()) // libopus xxx
 
-const encoder = new OpusEncoder(48000, 2);
+const encoder = new OpusEncoder(48000, 2)
 
-const encoded = encoder.encode(buffer);
-const decoded = encoder.decode(encoded);
+const encoded = encoder.encode(buffer)
+const decoded = encoder.decode(encoded)
 ```
 
 You can use `OpusEncoder` to encode pcm data to opus and decode opus data to pcm format. Stream interface is provided by [@discord-player/opus](https://npm.im/@discord-player/opus) package.

@@ -25,7 +25,6 @@ pub struct JsProbeResult {
 }
 
 #[napi(js_name = "CodecType")]
-#[allow(non_camel_case_types)]
 pub enum JsCodecType {
   // Unknown
   UNKNOWN = 0,
@@ -128,13 +127,13 @@ pub struct MetadataField {
 #[napi(catch_unwind, ts_return_type = "Promise<ProbeResult>")]
 #[allow(dead_code)]
 pub fn probe(data: Buffer) -> AsyncTask<ProbeTask> {
-  return AsyncTask::new(ProbeTask { input: data });
+  AsyncTask::new(ProbeTask { input: data })
 }
 
 #[napi(catch_unwind)]
 #[allow(dead_code)]
 pub fn probe_sync(data: Buffer) -> Result<JsProbeResult> {
-  return probe_inner(data.to_vec());
+  probe_inner(data.to_vec())
 }
 
 pub struct ProbeTask {
@@ -182,9 +181,9 @@ fn probe_inner(data: Vec<u8>) -> Result<JsProbeResult> {
   let metadata: Vec<MetadataField>;
 
   if let Some(metadata_rev) = format.metadata().current() {
-    metadata = parse_metadata(&metadata_rev);
+    metadata = parse_metadata(metadata_rev);
   } else if let Some(metadata_rev) = probed.metadata.get().as_ref().and_then(|m| m.current()) {
-    metadata = parse_metadata(&metadata_rev);
+    metadata = parse_metadata(metadata_rev);
   } else {
     metadata = Vec::new();
   }
@@ -280,7 +279,7 @@ fn probe_inner(data: Vec<u8>) -> Result<JsProbeResult> {
       codec_params.n_frames.unwrap_or(0),
     )
     .seconds as u32,
-    metadata: metadata,
+    metadata,
   })
 }
 

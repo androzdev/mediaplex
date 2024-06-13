@@ -63,19 +63,19 @@ impl OpusEncoder {
         opus_encoder_create(
           self.sample_rate,
           self.channels,
-          OPUS_APPLICATION_AUDIO as i32,
+          OPUS_APPLICATION_AUDIO,
           &mut opus_code,
         )
       };
 
-      if opus_code == OPUS_OK as i32 || !pointer.is_null() {
+      if opus_code == OPUS_OK || !pointer.is_null() {
         self.encoder = pointer;
       }
 
       return opus_code;
     }
 
-    OPUS_OK as i32
+    OPUS_OK
   }
 
   fn ensure_decoder(&mut self) -> i32 {
@@ -84,14 +84,14 @@ impl OpusEncoder {
 
       let pointer = unsafe { opus_decoder_create(self.sample_rate, self.channels, &mut opus_code) };
 
-      if opus_code == OPUS_OK as i32 || !pointer.is_null() {
+      if opus_code == OPUS_OK || !pointer.is_null() {
         self.decoder = pointer;
       }
 
       return opus_code;
     }
 
-    OPUS_OK as i32
+    OPUS_OK
   }
 
   #[napi]
@@ -108,7 +108,7 @@ impl OpusEncoder {
   pub fn encode(&mut self, data: Buffer) -> Result<Buffer> {
     let status = self.ensure_encoder();
 
-    if status != OPUS_OK as i32 {
+    if status != OPUS_OK {
       return Err(Error::new(
         Status::GenericFailure,
         format!("Failed to create encoder: {}", get_decode_error(status)),
@@ -139,7 +139,7 @@ impl OpusEncoder {
   pub fn decode(&mut self, data: Buffer) -> Result<Buffer> {
     let status = self.ensure_decoder();
 
-    if status != OPUS_OK as i32 {
+    if status != OPUS_OK {
       return Err(Error::new(
         Status::GenericFailure,
         format!("Failed to create decoder: {}", get_decode_error(status)),
@@ -178,17 +178,16 @@ impl OpusEncoder {
   pub fn set_bitrate(&mut self, bitrate: i32) -> Result<()> {
     let status = self.ensure_encoder();
 
-    if status != OPUS_OK as i32 {
+    if status != OPUS_OK {
       return Err(Error::new(
         Status::GenericFailure,
         format!("Failed to create encoder: {}", get_decode_error(status)),
       ));
     }
 
-    let status =
-      unsafe { opus_encoder_ctl!(self.encoder, OPUS_SET_BITRATE_REQUEST as i32, bitrate) };
+    let status = unsafe { opus_encoder_ctl!(self.encoder, OPUS_SET_BITRATE_REQUEST, bitrate) };
 
-    if status != OPUS_OK as i32 {
+    if status != OPUS_OK {
       return Err(Error::new(
         Status::GenericFailure,
         format!("Failed to apply encoder ctl: {}", get_decode_error(status)),
@@ -202,7 +201,7 @@ impl OpusEncoder {
   pub fn get_bitrate(&mut self) -> Result<i32> {
     let status = self.ensure_encoder();
 
-    if status != OPUS_OK as i32 {
+    if status != OPUS_OK {
       return Err(Error::new(
         Status::GenericFailure,
         format!("Failed to create encoder: {}", get_decode_error(status)),
@@ -211,10 +210,9 @@ impl OpusEncoder {
 
     let mut value = 0;
 
-    let status =
-      unsafe { opus_encoder_ctl!(self.encoder, OPUS_GET_BITRATE_REQUEST as i32, &mut value) };
+    let status = unsafe { opus_encoder_ctl!(self.encoder, OPUS_GET_BITRATE_REQUEST, &mut value) };
 
-    if status != OPUS_OK as i32 {
+    if status != OPUS_OK {
       return Err(Error::new(
         Status::GenericFailure,
         format!("Failed to apply encoder ctl: {}", get_decode_error(status)),
@@ -228,7 +226,7 @@ impl OpusEncoder {
   pub fn apply_encoder_ctl(&mut self, request: i32, value: i32) -> Result<()> {
     let status = self.ensure_encoder();
 
-    if status != OPUS_OK as i32 {
+    if status != OPUS_OK {
       return Err(Error::new(
         Status::GenericFailure,
         format!("Failed to create encoder: {}", get_decode_error(status)),
@@ -237,7 +235,7 @@ impl OpusEncoder {
 
     let status = unsafe { opus_encoder_ctl!(self.encoder, request, value) };
 
-    if status != OPUS_OK as i32 {
+    if status != OPUS_OK {
       return Err(Error::new(
         Status::GenericFailure,
         format!("Failed to apply encoder ctl: {}", get_decode_error(status)),
@@ -251,7 +249,7 @@ impl OpusEncoder {
   pub fn apply_decoder_ctl(&mut self, request: i32, value: i32) -> Result<()> {
     let status = self.ensure_decoder();
 
-    if status != OPUS_OK as i32 {
+    if status != OPUS_OK {
       return Err(Error::new(
         Status::GenericFailure,
         format!("Failed to create decoder: {}", get_decode_error(status)),
@@ -260,7 +258,7 @@ impl OpusEncoder {
 
     let status = unsafe { opus_decoder_ctl!(self.decoder, request, value) };
 
-    if status != OPUS_OK as i32 {
+    if status != OPUS_OK {
       return Err(Error::new(
         Status::GenericFailure,
         format!("Failed to apply decoder ctl: {}", get_decode_error(status)),

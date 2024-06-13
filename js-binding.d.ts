@@ -79,7 +79,7 @@ export const enum CodecType {
   WAVPACK = 8193,
   MONKEYS_AUDIO = 8194,
   ALAC = 8195,
-  TTA = 8196
+  TTA = 8196,
 }
 
 export function getOpusVersion(): string
@@ -109,4 +109,3 @@ export interface ProbeResult {
 }
 
 export function probeSync(data: Buffer): ProbeResult
-
