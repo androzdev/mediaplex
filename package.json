@@ -1,0 +1,120 @@
+{
+  "name": "mediaplex",
+  "version": "1.0.0-dev.0",
+  "description": "Media processing library for Node.js",
+  "main": "index.js",
+  "browser": "browser.js",
+  "repository": "git@github.com:androzdev/mediaplex.git",
+  "license": "MIT",
+  "keywords": [
+    "napi-rs",
+    "NAPI",
+    "N-API",
+    "Rust",
+    "node-addon",
+    "node-addon-api"
+  ],
+  "files": [
+    "index.d.ts",
+    "index.js",
+    "browser.js"
+  ],
+  "napi": {
+    "binaryName": "mediaplex",
+    "targets": [
+      "x86_64-pc-windows-msvc",
+      "x86_64-apple-darwin",
+      "x86_64-unknown-linux-gnu",
+      "x86_64-unknown-linux-musl",
+      "aarch64-unknown-linux-gnu",
+      "i686-pc-windows-msvc",
+      "armv7-unknown-linux-gnueabihf",
+      "aarch64-apple-darwin",
+      "aarch64-linux-android",
+      "x86_64-unknown-freebsd",
+      "aarch64-unknown-linux-musl",
+      "aarch64-pc-windows-msvc",
+      "armv7-linux-androideabi"
+    ]
+  },
+  "engines": {
+    "node": ">= 10"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "scripts": {
+    "artifacts": "napi artifacts",
+    "bench:encoder": "node benchmark/encoder.mjs",
+    "bench:decoder": "node benchmark/decoder.mjs",
+    "bench": "run-s bench:encoder bench:decoder",
+    "build": "napi build --platform --release --dts js-binding.d.ts --js js-binding.js",
+    "build:debug": "napi build --platform --dts js-binding.d.ts --js js-binding.js",
+    "format": "run-p format:prettier format:rs format:toml",
+    "format:prettier": "prettier . -w",
+    "format:toml": "taplo format",
+    "format:rs": "cargo fmt",
+    "lint": "oxlint .",
+    "prepublishOnly": "napi pre-publish -t npm",
+    "test": "ava",
+    "version": "napi version"
+  },
+  "devDependencies": {
+    "@discordjs/opus": "^0.9.0",
+    "@evan/opus": "^1.0.3",
+    "@evan/wasm": "^0.0.95",
+    "@napi-rs/cli": "^3.0.0-alpha.54",
+    "@napi-rs/lzma": "^1.3.0",
+    "@swc-node/register": "^1.9.0",
+    "@swc/core": "^1.4.17",
+    "@taplo/cli": "^0.7.0",
+    "@types/node": "^20.12.7",
+    "@types/tar": "^6",
+    "ava": "^6.1.2",
+    "chalk": "^5.3.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "mitata": "^0.1.11",
+    "npm-run-all2": "^6.1.2",
+    "opusscript": "^0.1.1",
+    "oxlint": "^0.3.1",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5"
+  },
+  "lint-staged": {
+    "*.@(js|ts|tsx)": [
+      "eslint -c .eslintrc.yml --fix"
+    ],
+    "*.@(js|ts|tsx|yml|yaml|md|json)": [
+      "prettier --write"
+    ],
+    "*.toml": [
+      "taplo format"
+    ]
+  },
+  "ava": {
+    "require": [
+      "@swc-node/register"
+    ],
+    "extensions": [
+      "ts"
+    ],
+    "timeout": "2m",
+    "workerThreads": false,
+    "environmentVariables": {
+      "TS_NODE_PROJECT": "./tsconfig.json"
+    }
+  },
+  "prettier": {
+    "printWidth": 120,
+    "semi": false,
+    "trailingComma": "all",
+    "singleQuote": true,
+    "arrowParens": "always"
+  },
+  "packageManager": "yarn@4.2.2",
+  "resolutions": {
+    "mediaplex": "workspace:*"
+  }
+}

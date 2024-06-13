@@ -1,0 +1,23 @@
+[package]
+authors = ["twlite <hello@twlite.dev>"]
+edition = "2021"
+name    = "mediaplex"
+version = "0.1.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+anyhow         = "1"
+napi           = { version = "2", features = ["anyhow", "napi6"] }
+napi-derive    = "2"
+symphonia      = { version = "0.5.4", features = ["all"] }
+unsafe-libopus = "0.1.1"
+
+[build-dependencies]
+napi-build = "2"
+
+[profile.release]
+lto = true
