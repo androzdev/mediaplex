@@ -1,28 +1,21 @@
-const { OpusEncoder: OpusEncoderNative, getOpusVersion, CodecType, probe, probeSync } = require('./js-binding')
+const { Readable } = require('stream');
+const binding = require('./js-binding');
 
 class OpusEncoder {
-  constructor(sampleRate, channels) {
-    return OpusEncoderNative.create(sampleRate, channels)
-  }
+    constructor(sampleRate, channels) {
+        return binding.OpusEncoder.create(sampleRate, channels)
+    }
 
-  static create(sampleRate, channels) {
-    return OpusEncoderNative.create(sampleRate, channels)
-  }
+    static create(sampleRate, channels) {
+        return binding.OpusEncoder.create(sampleRate, channels)
+    }
 
-  static [Symbol.hasInstance](target) {
-    return target instanceof OpusEncoderNative
-  }
+    static [Symbol.hasInstance](target) {
+        return target instanceof binding.OpusEncoder
+    }
 }
 
-module.exports = {
-  OpusEncoder,
-  getOpusVersion,
-  CodecType,
-  probe,
-  probeSync
-}
-const binding = require('./js-binding');
-const { Readable } = require('stream');
+
 
 /**
  * @typedef StreamProbeResult
@@ -159,7 +152,7 @@ function readMetadata(result) {
     return res;
 }
 
-const { CodecType, probe, probeSync, OpusEncoder, getOpusVersion } = binding;
+const { CodecType, probe, probeSync, getOpusVersion, } = binding;
 const { version } = require('./package.json');
 
 module.exports = {

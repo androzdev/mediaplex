@@ -6,14 +6,6 @@
   "browser": "browser.js",
   "repository": "git@github.com:androzdev/mediaplex.git",
   "license": "MIT",
-  "keywords": [
-    "napi-rs",
-    "NAPI",
-    "N-API",
-    "Rust",
-    "node-addon",
-    "node-addon-api"
-  ],
   "files": [
     "index.d.ts",
     "index.js",
@@ -36,37 +28,8 @@
       "aarch64-pc-windows-msvc",
       "armv7-linux-androideabi"
     ]
-  "version": "0.0.9",
-  "main": "index.js",
+  },
   "types": "index.d.ts",
-  "napi": {
-    "name": "mediaplex",
-    "triples": {
-      "additional": [
-        "aarch64-apple-darwin",
-        "aarch64-linux-android",
-        "aarch64-pc-windows-msvc",
-        "armv7-unknown-linux-gnueabihf",
-        "x86_64-unknown-freebsd",
-        "i686-pc-windows-msvc",
-        "universal-apple-darwin"
-      ]
-    }
-  },
-  "license": "MIT",
-  "devDependencies": {
-    "@discordjs/opus": "^0.9.0",
-    "@evan/opus": "^1.0.2",
-    "@evan/wasm": "^0.0.95",
-    "@napi-rs/cli": "^2.16.3",
-    "@types/node": "^20.6.0",
-    "ava": "5.3.1",
-    "mitata": "^0.1.6",
-    "opusscript": "^0.1.0"
-  },
-  "ava": {
-    "timeout": "3m"
-  },
   "engines": {
     "node": ">= 10"
   },
@@ -147,34 +110,4 @@
   "resolutions": {
     "mediaplex": "workspace:*"
   }
-}
-  "scripts": {
-    "artifacts": "napi artifacts",
-    "build": "napi build --platform --release --dts js-binding.d.ts --js js-binding.js ./",
-    "build:debug": "napi build --platform --dts js-binding.d.ts --js js-binding.js ./",
-    "prepublishOnly": "napi prepublish -t npm",
-    "test": "ava",
-    "universal": "napi universal",
-    "version": "napi version",
-    "benchmark": "node ./benchmark/encoder.mjs && node ./benchmark/decoder.mjs"
-  },
-  "packageManager": "yarn@3.6.1",
-  "description": "Tiny media transcoding utility for node",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/androzdev/mediaplex.git"
-  },
-  "keywords": [
-    "node",
-    "media",
-    "utility",
-    "transcoder",
-    "audio",
-    "ffmpeg"
-  ],
-  "author": "AndrozDev",
-  "bugs": {
-    "url": "https://github.com/androzdev/mediaplex/issues"
-  },
-  "homepage": "https://github.com/androzdev/mediaplex#readme"
 }

@@ -16,20 +16,6 @@ const config = {
   FRAME_SIZE: 960,
   SAMPLE_RATE: 48000,
   CHANNELS: 2,
-    createDjsEncoder,
-    createMediaplexEncoder,
-    createOpusScriptAsmEncoder,
-    createOpusScriptWasmEncoder,
-    generateOpusSample,
-    createEvanOpusDecoder,
-    createEvanOpusDecoderWasm,
-    createSimdEvanOpusDecoder
-} from './common.mjs';
-
-const config = {
-    FRAME_SIZE: 960,
-    SAMPLE_RATE: 48000,
-    CHANNELS: 2,
 };
 
 const mediaplexEncoder = createMediaplexEncoder(config);
@@ -64,27 +50,6 @@ mitata.group('OpusDecoder', () => {
   mitata.bench('@evan/wasm', () => {
     evanWasmOpus.decode(SAMPLE);
   });
-    mitata.bench('mediaplex', () => {
-        mediaplexEncoder.decode(SAMPLE);
-    });
-    mitata.bench('@discordjs/opus', () => {
-        nativeEncoder.decode(SAMPLE);
-    });
-    mitata.bench('opusscript', () => {
-        wasmEncoder.decode(SAMPLE);
-    });
-    mitata.bench('opusscript (no wasm)', () => {
-        asmEncoder.decode(SAMPLE);
-    });
-    mitata.bench('@evan/opus', () => {
-        evanOpus.decode(SAMPLE);
-    });
-    mitata.bench('@evan/opus (wasm)', () => {
-        evanOpusWasm.decode(SAMPLE);
-    });
-    mitata.bench('@evan/wasm', () => {
-        evanWasmOpus.decode(SAMPLE);
-    });
 });
 
 await mitata.run();
