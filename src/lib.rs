@@ -1,5 +1,5 @@
 #![deny(clippy::all)]
-#![allow(non_camel_case_types, non_snake_case, unused)]
+#![allow(non_camel_case_types, clippy::upper_case_acronyms)]
 
 #[macro_use]
 extern crate napi_derive;

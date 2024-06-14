@@ -1,12 +1,13 @@
-use core::slice;
-
 use napi::bindgen_prelude::*;
-use napi::Error;
-use napi::Result;
+use napi::{Error, Result};
 
-use self::lib::*;
-
-mod lib;
+use unsafe_libopus::{
+  opus_decode, opus_decoder_create, opus_decoder_ctl, opus_decoder_destroy, opus_encode,
+  opus_encoder_create, opus_encoder_ctl, opus_encoder_destroy, opus_get_version_string,
+  OPUS_ALLOC_FAIL, OPUS_APPLICATION_AUDIO, OPUS_BAD_ARG, OPUS_BUFFER_TOO_SMALL,
+  OPUS_GET_BITRATE_REQUEST, OPUS_INTERNAL_ERROR, OPUS_INVALID_PACKET, OPUS_INVALID_STATE, OPUS_OK,
+  OPUS_SET_BITRATE_REQUEST, OPUS_UNIMPLEMENTED,
+};
 
 const FRAME_SIZE: usize = 960;
 const MAX_FRAME_SIZE: usize = 6 * FRAME_SIZE;
@@ -29,26 +30,24 @@ fn get_decode_error(decoded_samples: i32) -> &'static str {
 pub fn get_opus_version() -> String {
   let version_string = unsafe { opus_get_version_string() };
   let version_cstr = unsafe { core::ffi::CStr::from_ptr(version_string) };
-
-  // fallback to commit hash
-  let version_string = version_cstr.to_str().unwrap_or("82ac57d").to_owned();
+  let version_string = version_cstr.to_str().unwrap_or("unknown").to_owned();
 
   version_string
 }
 
-#[napi(js_name = "OpusEncoder")]
-pub struct JsOpusEncoder {
-  encoder: *mut OpusEncoder,
-  decoder: *mut OpusDecoder,
+#[napi]
+pub struct OpusEncoder {
+  encoder: *mut unsafe_libopus::OpusEncoder,
+  decoder: *mut unsafe_libopus::OpusDecoder,
   sample_rate: i32,
   channels: i32,
 }
 
-#[napi(js_name = "OpusEncoder")]
-impl JsOpusEncoder {
-  #[napi(constructor)]
-  pub fn new(sample_rate: i32, channels: i32) -> Result<Self> {
-    Ok(JsOpusEncoder {
+#[napi]
+impl OpusEncoder {
+  #[napi(ts_return_type = "OpusEncoder")]
+  pub fn create(sample_rate: i32, channels: i32) -> Result<Self> {
+    Ok(Self {
       encoder: std::ptr::null_mut(),
       decoder: std::ptr::null_mut(),
       sample_rate,
@@ -64,19 +63,19 @@ impl JsOpusEncoder {
         opus_encoder_create(
           self.sample_rate,
           self.channels,
-          OPUS_APPLICATION_AUDIO as i32,
+          OPUS_APPLICATION_AUDIO,
           &mut opus_code,
         )
       };
 
-      if opus_code == OPUS_OK as i32 || !pointer.is_null() {
+      if opus_code == OPUS_OK || !pointer.is_null() {
         self.encoder = pointer;
       }
 
       return opus_code;
     }
 
-    OPUS_OK as i32
+    OPUS_OK
   }
 
   fn ensure_decoder(&mut self) -> i32 {
@@ -85,14 +84,14 @@ impl JsOpusEncoder {
 
       let pointer = unsafe { opus_decoder_create(self.sample_rate, self.channels, &mut opus_code) };
 
-      if opus_code == OPUS_OK as i32 || !pointer.is_null() {
+      if opus_code == OPUS_OK || !pointer.is_null() {
         self.decoder = pointer;
       }
 
       return opus_code;
     }
 
-    OPUS_OK as i32
+    OPUS_OK
   }
 
   #[napi]
@@ -109,7 +108,7 @@ impl JsOpusEncoder {
   pub fn encode(&mut self, data: Buffer) -> Result<Buffer> {
     let status = self.ensure_encoder();
 
-    if status != OPUS_OK as i32 {
+    if status != OPUS_OK {
       return Err(Error::new(
         Status::GenericFailure,
         format!("Failed to create encoder: {}", get_decode_error(status)),
@@ -140,7 +139,7 @@ impl JsOpusEncoder {
   pub fn decode(&mut self, data: Buffer) -> Result<Buffer> {
     let status = self.ensure_decoder();
 
-    if status != OPUS_OK as i32 {
+    if status != OPUS_OK {
       return Err(Error::new(
         Status::GenericFailure,
         format!("Failed to create decoder: {}", get_decode_error(status)),
@@ -179,17 +178,16 @@ impl JsOpusEncoder {
   pub fn set_bitrate(&mut self, bitrate: i32) -> Result<()> {
     let status = self.ensure_encoder();
 
-    if status != OPUS_OK as i32 {
+    if status != OPUS_OK {
       return Err(Error::new(
         Status::GenericFailure,
         format!("Failed to create encoder: {}", get_decode_error(status)),
       ));
     }
 
-    let status =
-      unsafe { opus_encoder_ctl(self.encoder, OPUS_SET_BITRATE_REQUEST as i32, bitrate) };
+    let status = unsafe { opus_encoder_ctl!(self.encoder, OPUS_SET_BITRATE_REQUEST, bitrate) };
 
-    if status != OPUS_OK as i32 {
+    if status != OPUS_OK {
       return Err(Error::new(
         Status::GenericFailure,
         format!("Failed to apply encoder ctl: {}", get_decode_error(status)),
@@ -203,7 +201,7 @@ impl JsOpusEncoder {
   pub fn get_bitrate(&mut self) -> Result<i32> {
     let status = self.ensure_encoder();
 
-    if status != OPUS_OK as i32 {
+    if status != OPUS_OK {
       return Err(Error::new(
         Status::GenericFailure,
         format!("Failed to create encoder: {}", get_decode_error(status)),
@@ -212,10 +210,9 @@ impl JsOpusEncoder {
 
     let mut value = 0;
 
-    let status =
-      unsafe { opus_encoder_ctl(self.encoder, OPUS_GET_BITRATE_REQUEST as i32, &mut value) };
+    let status = unsafe { opus_encoder_ctl!(self.encoder, OPUS_GET_BITRATE_REQUEST, &mut value) };
 
-    if status != OPUS_OK as i32 {
+    if status != OPUS_OK {
       return Err(Error::new(
         Status::GenericFailure,
         format!("Failed to apply encoder ctl: {}", get_decode_error(status)),
@@ -229,16 +226,16 @@ impl JsOpusEncoder {
   pub fn apply_encoder_ctl(&mut self, request: i32, value: i32) -> Result<()> {
     let status = self.ensure_encoder();
 
-    if status != OPUS_OK as i32 {
+    if status != OPUS_OK {
       return Err(Error::new(
         Status::GenericFailure,
         format!("Failed to create encoder: {}", get_decode_error(status)),
       ));
     }
 
-    let status = unsafe { opus_encoder_ctl(self.encoder, request, value) };
+    let status = unsafe { opus_encoder_ctl!(self.encoder, request, value) };
 
-    if status != OPUS_OK as i32 {
+    if status != OPUS_OK {
       return Err(Error::new(
         Status::GenericFailure,
         format!("Failed to apply encoder ctl: {}", get_decode_error(status)),
@@ -252,16 +249,16 @@ impl JsOpusEncoder {
   pub fn apply_decoder_ctl(&mut self, request: i32, value: i32) -> Result<()> {
     let status = self.ensure_decoder();
 
-    if status != OPUS_OK as i32 {
+    if status != OPUS_OK {
       return Err(Error::new(
         Status::GenericFailure,
         format!("Failed to create decoder: {}", get_decode_error(status)),
       ));
     }
 
-    let status = unsafe { opus_decoder_ctl(self.decoder, request, value) };
+    let status = unsafe { opus_decoder_ctl!(self.decoder, request, value) };
 
-    if status != OPUS_OK as i32 {
+    if status != OPUS_OK {
       return Err(Error::new(
         Status::GenericFailure,
         format!("Failed to apply decoder ctl: {}", get_decode_error(status)),
@@ -277,7 +274,7 @@ impl JsOpusEncoder {
   }
 }
 
-impl Drop for JsOpusEncoder {
+impl Drop for OpusEncoder {
   fn drop(&mut self) {
     if !self.encoder.is_null() {
       unsafe {
