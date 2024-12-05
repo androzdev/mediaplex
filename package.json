@@ -27,8 +27,12 @@
   "author": "Twilight <hello@twlite.dev>",
   "devDependencies": {
     "@napi-rs/cli": "^2.18.4",
+    "@taplo/cli": "^0.7.0",
     "@types/node": "^22.10.1",
-    "ava": "^6.0.1"
+    "ava": "^6.0.1",
+    "npm-run-all2": "^6.2.2",
+    "oxlint": "^0.9.0",
+    "prettier": "^3.3.3"
   },
   "ava": {
     "timeout": "3m"
@@ -40,6 +44,11 @@
     "artifacts": "napi artifacts",
     "build": "napi build --platform --release --dts js-binding.d.ts --js js-binding.js",
     "build:debug": "napi build --platform --dts js-binding.d.ts --js js-binding.js",
+    "format": "run-p format:prettier format:rs format:toml",
+    "format:prettier": "prettier . -w",
+    "format:toml": "taplo format",
+    "format:rs": "cargo fmt",
+    "lint": "oxlint .",
     "prepublishOnly": "napi prepublish -t npm",
     "test": "ava",
     "universal": "napi universal",

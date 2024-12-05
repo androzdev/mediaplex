@@ -1,5 +1,5 @@
-import type { ProbeResult } from './js-binding';
-import type { Readable } from 'stream';
+import type { ProbeResult } from "./js-binding";
+import type { Readable } from "stream";
 
 export class OpusEncoder {
   public constructor(sampleRate: number, channels: number);
@@ -22,7 +22,7 @@ export {
   getOpusVersion,
   probe,
   probeSync,
-} from './js-binding';
+} from "./js-binding";
 
 export type StreamProbeResult = {
   stream: Readable;
@@ -53,6 +53,6 @@ export interface ProbeStreamOptions {
 
 export function probeStream(
   stream: Readable,
-  options?: ProbeStreamOptions
+  options?: ProbeStreamOptions,
 ): Promise<StreamProbeResult>;
 export function readMetadata(result: ProbeResult): Metadata;
