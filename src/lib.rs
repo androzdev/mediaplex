@@ -5,4 +5,4 @@ extern crate napi_derive;
 
 pub mod opus;
 pub mod probe;
-pub mod transcoder;
+// pub mod transcoder;
