@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "types": "index.d.ts",
+  "description": "Media processing library for Node.js",
   "napi": {
     "name": "mediaplex",
     "triples": {
@@ -23,6 +24,13 @@
       ]
     }
   },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "js-binding.js",
+    "js-binding.d.ts"
+  ],
+  "repository": "git@github.com:webviewjs/webview.git",
   "license": "MIT",
   "author": "Twilight <hello@twlite.dev>",
   "devDependencies": {
@@ -30,6 +38,7 @@
     "@taplo/cli": "^0.7.0",
     "@types/node": "^22.10.1",
     "ava": "^6.0.1",
+    "mitata": "^1.0.20",
     "npm-run-all2": "^6.2.2",
     "oxlint": "^0.9.0",
     "prettier": "^3.3.3"

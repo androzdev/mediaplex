@@ -1051,6 +1051,7 @@ __metadata:
     "@taplo/cli": "npm:^0.7.0"
     "@types/node": "npm:^22.10.1"
     ava: "npm:^6.0.1"
+    mitata: "npm:^1.0.20"
     npm-run-all2: "npm:^6.2.2"
     oxlint: "npm:^0.9.0"
     prettier: "npm:^3.3.3"
@@ -1138,6 +1139,13 @@ __metadata:
     minipass: "npm:^3.0.0"
     yallist: "npm:^4.0.0"
   checksum: 10c0/64fae024e1a7d0346a1102bb670085b17b7f95bf6cfdf5b128772ec8faf9ea211464ea4add406a3a6384a7d87a0cd1a96263692134323477b4fb43659a6cab78
+  languageName: node
+  linkType: hard
+
+"mitata@npm:^1.0.20":
+  version: 1.0.20
+  resolution: "mitata@npm:1.0.20"
+  checksum: 10c0/a41daa38d2fe797e4d75290d1ec7a4394efc2674390c5f3bc69b5df06101dca6554ee51ac9067c6077ebe1469039f7709fa227c53f5252f8d46d114acf9c88df
   languageName: node
   linkType: hard
 
