@@ -2,10 +2,16 @@
 
 use napi::bindgen_prelude::*;
 use napi::{Result, Task};
-use symphonia::core::meta::MetadataRevision;
-use symphonia::core::{
-  audio::Channels, codecs::*, io::MediaSourceStream, probe::Hint, units::TimeBase,
+use symphonium::symphonia::core::{
+  audio::Channels,
+  codecs::*,
+  formats::FormatOptions,
+  io::MediaSourceStream,
+  meta::{MetadataOptions, MetadataRevision},
+  probe::Hint,
+  units::TimeBase,
 };
+use symphonium::symphonia::default::get_probe;
 
 #[napi(object, js_name = "ProbeResult")]
 pub struct JsProbeResult {
@@ -166,10 +172,10 @@ fn probe_inner(data: Vec<u8>) -> Result<JsProbeResult> {
   let hint = Hint::new();
 
   // Use the default options for metadata and format readers.
-  let meta_opts: symphonia::core::meta::MetadataOptions = Default::default();
-  let fmt_opts: symphonia::core::formats::FormatOptions = Default::default();
+  let meta_opts: MetadataOptions = Default::default();
+  let fmt_opts: FormatOptions = Default::default();
 
-  let mut probed = symphonia::default::get_probe()
+  let mut probed = get_probe()
     .format(&hint, mss, &fmt_opts, &meta_opts)
     .map_err(|e| {
       Error::new(

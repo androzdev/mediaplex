@@ -10,7 +10,6 @@ crate-type = ["cdylib"]
 # Default enable napi4 feature, see https://nodejs.org/api/n-api.html#node-api-version-matrix
 napi = { version = "2.12.2", default-features = false, features = ["napi4"] }
 napi-derive = "2.12.2"
-symphonia = { version = "0.5.4", features = ["all"] }
 symphonium = { version = "0.2.2", features = ["all"] }
 unsafe-libopus = "0.2.0"
 
