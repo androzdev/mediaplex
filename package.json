@@ -30,7 +30,7 @@
     "js-binding.js",
     "js-binding.d.ts"
   ],
-  "repository": "git@github.com:webviewjs/webview.git",
+  "repository": "git@github.com:androzdev/mediaplex.git",
   "license": "MIT",
   "author": "Twilight <hello@twlite.dev>",
   "devDependencies": {

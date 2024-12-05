@@ -17,5 +17,6 @@
   },
   "libc": [
     "musl"
-  ]
+  ],
+  "repository": "git@github.com:androzdev/mediaplex.git"
 }

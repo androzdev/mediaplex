@@ -17,5 +17,6 @@
   },
   "libc": [
     "glibc"
-  ]
+  ],
+  "repository": "git@github.com:androzdev/mediaplex.git"
 }
