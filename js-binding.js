@@ -116,7 +116,7 @@ switch (platform) {
         nativeBinding = require('mediaplex-darwin-universal')
       }
       break
-    } catch {}
+    } catch { }
     switch (arch) {
       case 'x64':
         localFileExisted = existsSync(join(__dirname, 'mediaplex.darwin-x64.node'))
